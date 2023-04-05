@@ -1,0 +1,18 @@
+<% page_title "@#{@user.pretty_name}" %>
+<%= render "secondary_links" %>
+
+<div id="c-users">
+  <div id="a-show">
+    <h1><%= link_to_user @user %></h1>
+
+    <%= render "statistics", presenter: @user.presenter, user: @user %>
+
+    <%= render "posts/partials/common/inline_blacklist" %>
+    <%= render "post_summary", presenter: @user.presenter, user: @user %>
+  </div>
+</div>
+
+<% if Danbooru.config.comments_enabled?.to_s.truthy? %>
+  <% atom_feed_tag "Comments on #{@user.pretty_name}'s uploads", comments_url(:atom, search: { post_tags_match: "user:#{@user.name}" }) %>
+  <% atom_feed_tag "Comments on posts commented on by #{@user.pretty_name}", comments_url(:atom, search: { post_tags_match: "commenter:#{@user.name}" }) %>
+<% end %>

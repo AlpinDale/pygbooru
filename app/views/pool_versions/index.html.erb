@@ -1,0 +1,13 @@
+<div id="c-pool-versions">
+  <div id="a-index">
+    <h1>Pool History</h1>
+
+    <%= render "versions/types" %>
+
+    <%= render "listing" %>
+
+    <%= numbered_paginator(@pool_versions) %>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

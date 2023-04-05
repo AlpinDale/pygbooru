@@ -1,0 +1,20 @@
+<% page_title "Pool Gallery" %>
+<% meta_description "See thousands of translated anime & hentai comics, galleries, doujins, and more on #{Danbooru.config.app_name}." %>
+
+<%= render "secondary_links" %>
+
+<div id="c-pools">
+  <div id="a-gallery">
+    <%= render "search", :path => gallery_pools_path %>
+
+    <%= render "posts/partials/common/inline_blacklist" %>
+
+    <%= render(PostGalleryComponent.new) do |gallery| %>
+      <% @pools.each do |pool| %>
+        <% gallery.post(post: pool.cover_post, link_target: pool, pool: pool, show_deleted: true) %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@pools) %>
+  </div>
+</div>

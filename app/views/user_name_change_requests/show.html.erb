@@ -1,0 +1,29 @@
+<div id="c-user-name-change-requests">
+  <div id="a-show">
+    <h1>Name Change Request</h1>
+
+    <table class="aligned-vertical">
+      <tbody>
+        <tr>
+          <th>Date</th>
+          <td>
+            <%= compact_time @change_request.created_at %>
+          </td>
+        </tr>
+        <tr>
+          <th>User</th>
+          <td><%= link_to_user @change_request.user %></td>
+        </tr>
+        <tr>
+          <th>Request</th>
+          <td>
+            <strong><%= @change_request.original_name %></strong> ->
+            <strong><%= @change_request.desired_name %></strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

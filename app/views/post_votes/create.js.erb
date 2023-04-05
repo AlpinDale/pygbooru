@@ -1,0 +1,1 @@
+$("span.post-votes[data-id=<%= @post.id %>]").replaceWith("<%= j render_post_votes @post, current_user: CurrentUser.user %>");

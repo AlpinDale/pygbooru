@@ -1,0 +1,34 @@
+@import "./000_vars";
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:visited {
+  color: var(--link-color);
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+a:active {
+  color: var(--link-color);
+}
+
+a.active {
+  font-weight: bold;
+}
+
+a.active-link {
+  @include active-link;
+}
+
+a.inactive-link {
+  @include inactive-link;
+}
+
+a[rel*="external"] {
+  word-break: break-all;
+}

@@ -1,0 +1,48 @@
+<% meta_description "Search thousands of anime & hentai artists on #{Danbooru.config.app_name}." %>
+<% noindex if params[:search].present? %>
+
+<div id="c-artists">
+  <div id="a-index">
+    <%= render "search" %>
+
+    <%= table_for @artists, class: "striped autofit", tr: { class: "h-10" } do |t| %>
+      <% t.column "Name" do |artist| %>
+        <%= link_to artist.name, artist, class: "tag-type-#{Tag.categories.artist}" %>
+        <span class="post-count"><%= artist.tag.try(:post_count) || 0 %></span>
+        <% if !artist.group_name.blank? %>
+          (group: <%= link_to artist.group_name, artist %>)
+        <% end %>
+      <% end %>
+      <% t.column "Other Names", td: {class: "col-expand"} do |artist| %>
+        <% unless artist.is_banned? && !policy(artist).can_view_banned? %>
+          <div class="flex flex-wrap gap-1">
+            <% artist.other_names.each do |name| %>
+              <%= link_to name, artists_path(search: { any_name_matches: name }), class: "artist-other-name chip-primary text-sm truncate", rel: "nofollow" %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+      <% t.column "Status" do |artist| %>
+        <% if artist.is_deleted? %>
+          <%= link_to "Deleted", artists_path(search: { is_deleted: true }) %>
+        <% end %>
+
+        <% if artist.is_banned? %>
+          <%= link_to "Banned", artists_path(search: { is_banned: true }) %>
+        <% end %>
+      <% end %>
+      <% t.column "Updated" do |artist| %>
+        <%= time_ago_in_words_tagged(artist.updated_at) %>
+      <% end %>
+      <% t.column column: "control" do |artist| %>
+        <% if policy(artist).update? %>
+          <%= link_to "Edit", edit_artist_path(artist) %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@artists) %>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

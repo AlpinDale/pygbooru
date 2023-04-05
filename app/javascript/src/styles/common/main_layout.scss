@@ -1,0 +1,42 @@
+div#page {
+  overflow: visible;
+  margin-left: 30px;
+  margin-right: 30px;
+
+  aside#sidebar > section {
+    margin-bottom: 1em;
+  }
+
+  section#content {
+    overflow: visible;
+  }
+}
+
+.sidebar-container {
+  #sidebar {
+    min-width: 230px;
+
+    @media (min-width: 1080px) {
+      min-width: 245px;
+    }
+
+    @media (min-width: 1920px) {
+      min-width: 280px;
+    }
+  }
+}
+
+/* A container for the main <h1> tag, with optional right-aligned action buttons */
+div.page-heading {
+  display: flex;
+  margin-bottom: 1em;
+
+  h1 {
+    flex-grow: 1;
+    line-height: 1em;
+  }
+
+  a {
+    align-self: center;
+  }
+}

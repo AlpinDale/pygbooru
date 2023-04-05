@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title><%= page_title %></title>
+  <link rel="icon" href="/favicon.ico" sizes="16x16" type="image/x-icon">
+  <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml">
+  <link rel="top" title="<%= Danbooru.config.app_name %>" href="/">
+  <%= csrf_meta_tag %>
+  <%= raw Danbooru.config.custom_html_header_content %>
+  <%= javascript_pack_tag "application", defer: false %>
+  <%= stylesheet_pack_tag "application" %>
+  <%= yield :html_header %>
+</head>
+<body lang="en">
+  <div id="page">
+    <%= yield :layout %>
+  </div>
+</body>
+</html>

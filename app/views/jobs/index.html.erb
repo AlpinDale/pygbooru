@@ -1,0 +1,59 @@
+<div id="c-jobs">
+  <div id="a-index">
+    <h1>Jobs</h1>
+
+    <%= search_form_for(jobs_path) do |f| %>
+      <%= f.input :name, collection: ApplicationJob.job_classes.map { |klass| klass.name.titleize.delete_suffix(" Job") }, include_blank: true, selected: params[:search][:name] %>
+      <%= f.input :status, collection: %w[Running Queued Finished Discarded], include_blank: true, selected: params[:search][:status] %>
+      <%= f.input :order, collection: [%w[Created created_at], %w[Updated updated_at], %w[Scheduled scheduled_at], %w[Performed performed_at], %w[Finished finished_at]], include_blank: true, selected: params[:search][:order] %>
+      <%= f.submit "Search" %>
+    <% end %>
+
+    <%= table_for @jobs, class: "striped autofit" do |t| %>
+      <% t.column "Name" do |job| %>
+        <%= job.pretty_name %>
+      <% end %>
+
+      <% t.column "Details", td: { class: "col-expand" } do |job| %>
+        <% if policy(job).can_see_params? %>
+          <%= job.serialized_params["arguments"] %>
+        <% end %>
+      <% end %>
+
+      <% t.column "Error", td: { class: "col-expand" } do |job| %>
+        <% if policy(job).can_see_params? && job.error.present? %>
+          <%= job.error %>
+        <% end %>
+      <% end %>
+
+      <% t.column "Attempts" do |job| %>
+        <%= job.executions_count %>
+      <% end %>
+
+      <% t.column :status %>
+
+      <% t.column "Duration" do |job| %>
+        <%= duration_to_hhmmssms(job.job_duration) if job.job_duration %>
+      <% end %>
+
+      <% t.column "Queue Delay" do |job| %>
+        <%= duration_to_hhmmssms(job.queue_delay) if job.queue_delay %>
+      <% end %>
+
+      <% t.column "Created" do |job| %>
+        <%= time_ago_in_words_tagged(job.created_at) %>
+      <% end %>
+
+      <% t.column column: "control" do |job| %>
+        <% if policy(job).update? %>
+          <%= link_to "Run", run_job_path(job), method: :put, remote: true %> |
+          <%= link_to "Retry", retry_job_path(job), method: :put, remote: true %> |
+          <%= link_to "Cancel", cancel_job_path(job), method: :put, remote: true %> |
+          <%= link_to "Delete", job_path(job), method: :delete, remote: true %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@jobs) %>
+  </div>
+</div>

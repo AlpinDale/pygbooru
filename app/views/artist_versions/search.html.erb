@@ -1,0 +1,13 @@
+<div id="c-artist-versions">
+  <div id="a-search">
+    <h1>Search Changes</h1>
+
+    <%= search_form_for(artist_versions_path) do |f| %>
+      <%= f.input :updater_name, label: "Updater", input_html: { value: params.dig(:search, :updater_name), "data-autocomplete": "user" } %>
+      <%= f.input :name, label: "Artist", input_html: { value: params.dig(:search, :name), "data-autocomplete": "artist" } %>
+      <%= f.submit "Search" %>
+    <% end %>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

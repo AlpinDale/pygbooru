@@ -1,0 +1,27 @@
+<div id="c-post-approvals">
+  <div id="a-index">
+    <h1>Approvals</h1>
+    <%= render "posts/partials/common/inline_blacklist" %>
+
+    <%= search_form_for(post_approvals_path) do |f| %>
+      <%= f.input :user_name, label: "Approver", input_html: { value: params[:search][:user_name], data: { autocomplete: "user" } } %>
+      <%= f.input :post_tags_match, label: "Tags", input_html: { value: params[:search][:post_tags_match], data: { autocomplete: "tag-query" } } %>
+      <%= f.submit "Search" %>
+    <% end %>
+
+    <%= table_for @post_approvals, width: "100%" do |t| %>
+      <% t.column "Post", width: "1%" do |post_approval| %>
+        <%= post_preview(post_approval.post, show_deleted: true) %>
+      <% end %>
+      <% t.column "Approver", width: "15%" do |post_approval| %>
+        <%= link_to_user post_approval.user %>
+        <%= link_to "»", post_approvals_path(search: params[:search].merge(user_name: post_approval.user.name)) %>
+        <br><%= time_ago_in_words_tagged  post_approval.created_at %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@post_approvals) %>
+  </div>
+</div>
+
+<%= render "post_events/secondary_links" %>

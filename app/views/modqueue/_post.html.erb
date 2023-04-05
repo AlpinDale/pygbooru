@@ -1,0 +1,76 @@
+<%= tag.div id: "post_#{post.id}", **PostPreviewComponent.new(post: post, classes: "post card mod-queue-preview md:flex gap-4 p-4").article_attrs do %>
+  <div class="sm:text-center">
+    <%= render(PostPreviewComponent.new(post: post, classes: "mod-queue-preview", size: @preview_size, fit: :fixed, show_deleted: true)) do |component| %>
+      <% component.footer do %>
+        <%= render "modqueue/post_preview_footer", post: post %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div>
+    <div class="space-x-4">
+      <span>
+        <strong>Date</strong>
+        <%= time_ago_in_words_tagged(post.created_at) %>
+      </span>
+
+      <span>
+        <strong>Uploader</strong>
+        <%= link_to_user(post.uploader) %>&nbsp;<%= link_to "»", modqueue_index_path(search: { tags: "user:#{post.uploader.name}" }) %>
+      </span>
+
+      <span>
+        <strong>Rating</strong>
+        <%= post.pretty_rating %>
+      </span>
+    </div>
+
+    <% if post.has_active_pools? %>
+      <div>
+        <strong>Pools</strong>
+        <%= render "pools/inline_list", pools: post.pools.undeleted %>
+      </div>
+    <% end %>
+
+    <div>
+      <strong>Tags</strong>
+      <%= render_inline_tag_list(post) %>
+    </div>
+
+    <div class="mt-4">
+      <% if post.disapprovals.map(&:message).any?(&:present?) %>
+        <div>
+          <strong>Disapprovals</strong>
+
+          <% post.disapprovals.sort_by(&:id).select { |disapproval| disapproval.message.present? }.each do |disapproval| %>
+            <ul class="post-disapproval-reason list-bulleted">
+              <li>
+                <span class="prose"><%= format_text(disapproval.message, inline: true) %></span>
+
+                <% if policy(disapproval).can_view_creator? %>
+                  (<%= link_to_user(disapproval.user) %>, <%= time_ago_in_words_tagged(disapproval.created_at) %>)
+                <% else %>
+                  (<%= time_ago_in_words_tagged(disapproval.created_at) %>)
+                <% end %>
+              </li>
+            </ul>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if post.is_flagged? %>
+        <div>
+          <strong>Flag</strong>
+          <%= render "post_flags/reasons", flag: post.flags.select(&:pending?).last %>
+        </div>
+      <% end %>
+
+      <% if post.is_appealed? %>
+        <div>
+          <strong>Appeal</strong>
+          <%= render "post_appeals/reasons", appeal: post.appeals.select(&:pending?).last %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,61 @@
+<div id="c-moderation-reports">
+  <div id="a-index">
+    <h1>Moderation reports</h1>
+
+    <%= search_form_for(moderation_reports_path) do |f| %>
+      <%= f.input :recipient_name, label: "Reported user", input_html: { value: params[:search][:recipient_name], "data-autocomplete": "user" } %>
+      <%= f.input :creator_name, label: "Reporter", input_html: { value: params[:search][:creator_name], "data-autocomplete": "user" } %>
+      <%= f.input :reason_matches, label: "Reason", input_html: { value: params[:search][:reason_matches] } %>
+      <%= f.input :model_id, label: "ID", input_html: { value: params[:search][:model_id] } %>
+      <%= f.input :model_type, label: "Type", collection: ModerationReport.model_types, include_blank: true, selected: params[:search][:model_type] %>
+      <%= f.input :status, label: "Status", collection: ModerationReport.statuses.keys, include_blank: true, selected: params[:search][:status] %>
+      <%= f.submit "Search" %>
+    <% end %>
+
+    <%= table_for @moderation_reports, class: "striped autofit", width: "100%" do |t| %>
+      <% t.column "Reported" do |report| %>
+        <% if report.model_type == "Dmail" %>
+          <%= link_to report.model.dtext_shortlink, dmail_path(report.model, key: report.model.key) %>
+        <% else %>
+          <%= link_to report.model.dtext_shortlink, report.model %>
+        <% end %>
+        <%= link_to "»", moderation_reports_path(search: { model_type: report.model_type, model_id: report.model_id }) %>
+      <% end %>
+
+      <% t.column "Reason", td: { class: "col-expand" } do |report| %>
+        <span class="prose">
+          <%= format_text report.reason, inline: true %>
+        </span>
+      <% end %>
+
+      <% t.column "Status" do |report| %>
+        <%= link_to report.status.capitalize, moderation_reports_path(search: { status: report.status }) %>
+      <% end %>
+
+      <% t.column "Reported user" do |report| %>
+        <%= link_to_user report.reported_user %>
+        <%= link_to "»", moderation_reports_path(search: { recipient_name: report.reported_user.name }) %>
+      <% end %>
+
+      <% t.column "Reporter" do |report| %>
+        <%= link_to_user report.creator %>
+        <%= link_to "»", moderation_reports_path(search: { creator_name: report.creator.name }) %>
+        <div><%= time_ago_in_words_tagged(report.created_at) %></div>
+      <% end %>
+
+      <% t.column column: "control" do |report| %>
+        <%= render PopupMenuComponent.new do |menu| %>
+          <% menu.item do %>
+            <%= link_to "Mark as handled", moderation_report_path(report.id), method: :put, remote: true, "data-params": "moderation_report[status]=handled" %>
+          <% end %>
+
+          <% menu.item do %>
+            <%= link_to "Reject", moderation_report_path(report.id), method: :put, remote: true, "data-params": "moderation_report[status]=rejected" %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@moderation_reports) %>
+  </div>
+</div>

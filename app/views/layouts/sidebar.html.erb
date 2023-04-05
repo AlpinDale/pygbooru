@@ -1,0 +1,23 @@
+<% content_for(:layout) do %>
+  <div id="c-<%= params[:controller].parameterize.dasherize %>">
+    <div id="a-<%= params[:action].parameterize.dasherize %>">
+      <% if content_for(:top_content).present? %>
+        <section id="top-content">
+          <%= yield :top_content %>
+        </section>
+      <% end %>
+
+      <div class="sidebar-container flex sm:flex-col gap-3">
+        <aside id="sidebar" class="flex-0 break-words sm:order-2">
+          <%= yield :sidebar %>
+        </aside>
+
+        <section id="content" class="flex-1 min-w-0 sm:order-1">
+          <%= yield :content %>
+        </section>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render template: "layouts/default" %>

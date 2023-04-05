@@ -1,0 +1,14 @@
+<div id="c-note-versions">
+  <div id="a-index">
+    <h1>Note History</h1>
+
+    <%= render "versions/types" %>
+
+    <%= render "listing" %>
+
+    <%= numbered_paginator(@note_versions) %>
+
+  </div>
+</div>
+
+<%= render "notes/secondary_links" %>

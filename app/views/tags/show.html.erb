@@ -1,0 +1,16 @@
+<% page_title "Tag: #{@tag.pretty_name.startcase}" %>
+<%= render "secondary_links" %>
+
+<div id="c-tags">
+  <div id="a-show">
+    <h1>Tag: <%= @tag.name %></h1>
+
+    <ul>
+      <li>Count: <%= @tag.post_count %></li>
+      <li>Category: <%= @tag.category_name %></li>
+      <% if @tag.is_deprecated? %>
+        <li> This tag is <%= link_to "deprecated", wiki_page_path("help:deprecation_notice") %> and can't be added to new posts.</li>
+      <% end %>
+    </ul>
+  </div>
+</div>

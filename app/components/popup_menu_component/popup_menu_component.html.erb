@@ -1,0 +1,15 @@
+<%= tag.div class: "popup-menu inline-block #{classes}".strip, "data-hide-on-click": hide_on_click do %>
+  <a class="popup-menu-button <%= button_classes %>" href="javascript:void(0)">
+    <% if button.present? %>
+      <%= button %>
+    <% else %>
+      <%= helpers.ellipsis_icon %>
+    <% end %>
+  </a>
+
+  <ul class="popup-menu-content">
+    <% items.each do |item| %>
+      <%= item %>
+    <% end %>
+  </ul>
+<% end %>

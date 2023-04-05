@@ -1,0 +1,47 @@
+div#c-forum-topics {
+  a.topic-status {
+    margin-right: 0.25em;
+
+    &.label {
+      display: inline-block;
+      font-size: var(--text-xxs);
+      text-transform: uppercase;
+      border: 1px solid;
+      border-radius: 0.25rem;
+      background-color: var(--body-background-color);
+      padding: 0.125rem 0.25rem;
+
+      &:hover {
+        color: var(--inverse-text-color);
+      }
+    }
+
+    &.icon {
+      color: var(--muted-text-color);
+    }
+
+    &.new {
+      color: var(--forum-topic-status-new-color);
+      border-color: var(--forum-topic-status-new-color);
+      &:hover { background-color: var(--forum-topic-status-new-color); }
+    }
+
+    &.pending {
+      color: var(--forum-topic-status-pending-color);
+      border-color: var(--forum-topic-status-pending-color);
+      &:hover { background-color: var(--forum-topic-status-pending-color); }
+    }
+
+    &.approved {
+      color: var(--forum-topic-status-approved-color);
+      border-color: var(--forum-topic-status-approved-color);
+      &:hover { background-color: var(--forum-topic-status-approved-color); }
+    }
+
+    &.rejected {
+      color: var(--forum-topic-status-rejected-color);
+      border-color: var(--forum-topic-status-rejected-color);
+      &:hover { background-color: var(--forum-topic-status-rejected-color); }
+    }
+  }
+}

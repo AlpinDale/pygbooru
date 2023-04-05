@@ -1,0 +1,38 @@
+<% meta_description "See thousands of translated anime & hentai comics on #{Danbooru.config.app_name}." %>
+
+<div id="c-notes">
+  <div id="a-index">
+    <h1>Notes</h1>
+
+    <%= search_form_for(notes_path) do |f| %>
+      <%= f.hidden_field :group_by, value: "note" %>
+
+      <%= f.input :body_matches, label: "Note", input_html: { value: params[:search][:body_matches] } %>
+      <%= f.input :post_tags_match, label: "Tags", input_html: { value: params[:search][:post_tags_match], "data-autocomplete": "tag-query" } %>
+      <%= f.submit "Search" %>
+    <% end %>
+
+    <%= table_for @notes, class: "striped autofit" do |t| %>
+      <% t.column "Post" do |note| %>
+        <%= link_to note.post_id, note.post %>
+      <% end %>
+      <% t.column "Note" do |note| %>
+        <%= link_to "#{note.id}.#{note.version}", post_path(note.post_id, anchor: "note-#{note.id}") %>
+        <%= link_to "»", note_versions_path(search: { note_id: note.id }) %>
+      <% end %>
+      <% t.column "Text", td: { class: "col-expand" } do |note| %>
+        <%= note.body %>
+        <% unless note.is_active? %>
+          <span class="inactive">(deleted)</span>
+        <% end %>
+      <% end %>
+      <% t.column "Created" do |note| %>
+        <div><%= time_ago_in_words_tagged(note.created_at) %></div>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@notes) %>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

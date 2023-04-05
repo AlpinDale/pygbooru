@@ -1,0 +1,11 @@
+<div id="c-uploads">
+  <div id="a-new">
+    <h1 class="text-center mb-4">Upload</h1>
+
+    <div class="flex items-center justify-center">
+      <%= render FileUploadComponent.new(url: @upload.source, referer_url: @upload.referer_url, drop_target: "body") %>
+    </div>
+  </div>
+</div>
+
+<%= render "uploads/secondary_links" %>

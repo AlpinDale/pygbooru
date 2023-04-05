@@ -1,0 +1,30 @@
+<% page_title "Sign up" %>
+<% meta_description "Create a new account for free on #{Danbooru.config.app_name}." %>
+
+<%= render "secondary_links" %>
+
+<div id="c-users">
+  <div id="a-new" class="fixed-width-container">
+    <h1>Sign Up</h1>
+
+    <p>
+      A basic account is <strong>free</strong> and lets you keep favorites, upload artwork, edit tags, and post
+      comments. If you want <%= link_to "more features", new_user_upgrade_path %> you can upgrade your account later.
+    </p>
+
+    <div>
+      <%= edit_form_for(@user, html: { id: "signup-form" }, validate: true) do |f| %>
+        <%= f.input :name, as: :string, input_html: { autocapitalize: "none", minlength: UserNameValidator::MIN_LENGTH, maxlength: UserNameValidator::MAX_LENGTH }, required: true %>
+        <%= f.input :email_address, label: "Email", required: false, as: :email, input_html: { value: "", pattern: Danbooru::EmailAddress::EMAIL_REGEX, title: "your.name@example.com" }, hint: "Optional" %>
+        <%= f.input :password, input_html: { minlength: 5 }, required: true %>
+        <%= f.input :password_confirmation, input_html: { minlength: 5 }, required: true %>
+
+        <% if Danbooru.config.enable_recaptcha? %>
+          <%= invisible_recaptcha_tags callback: 'submitInvisibleRecaptchaForm', text: 'Sign up' %>
+        <% else %>
+          <%= f.submit "Sign up", :data => { :disable_with => "Signing up..." } %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

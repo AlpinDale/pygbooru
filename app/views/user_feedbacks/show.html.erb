@@ -1,0 +1,24 @@
+<% page_title "Feedback: @#{@user_feedback.user.name}" %>
+<%= render "secondary_links" %>
+
+<div id="c-user-feedbacks">
+  <div id="a-show">
+    <h1>User Feedback For <%= link_to_user @user_feedback.user %></h1>
+
+    <ul>
+      <li><strong>Creator</strong> <%= link_to_user @user_feedback.creator %></li>
+      <li><strong>Date</strong> <%= @user_feedback.created_at %></li>
+      <li><strong>Category</strong> <%= @user_feedback.category %></li>
+      <li>
+        <strong>Message</strong>
+        <div class="prose">
+          <%= format_text @user_feedback.body %>
+        </div>
+      </li>
+    </ul>
+
+    <% if policy(@user_feedback).update? %>
+      <p><%= link_to "Edit", edit_user_feedback_path(@user_feedback) %></p>
+    <% end %>
+  </div>
+</div>

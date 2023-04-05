@@ -1,0 +1,41 @@
+<div id="c-uploads">
+  <div id="a-index">
+    <h1 class="mb-2">My Uploads</h1>
+
+    <%= search_form_for(current_page_path) do |f| %>
+      <%= f.input :ai_tags_match, label: "Tags", input_html: { value: params.dig(:search, :ai_tags_match), data: { autocomplete: "tag-query" } } %>
+      <%= f.input :status, collection: %w[pending completed error], include_blank: true, selected: params.dig(:search, :status) %>
+      <%= f.input :is_posted, as: :hidden, input_html: { value: params.dig(:search, :is_posted) } %>
+      <%= f.input :min_score, as: :hidden, input_html: { value: params.dig(:search, :min_score) } %>
+
+      <%= f.input :order, collection: [%w[Newest id], %w[Oldest id_asc], %w[Random random]], include_blank: true, selected: params[:search][:order] %>
+      <%= f.submit "Search" %>
+    <% end %>
+
+    <div class="tab-panel-component horizontal-tab-panel">
+      <div class="tab-list">
+        <%= link_to "All", current_page_path(search: search_params.to_h.without("is_posted")), class: [(search_params[:is_posted].nil? ? "tab active-tab" : "tab")] %>
+        <%= link_to "Posted", current_page_path(search: search_params.merge(is_posted: true)), class: [(search_params[:is_posted].to_s.truthy? ? "tab active-tab" : "tab")] %>
+        <%= link_to "Unposted", current_page_path(search: search_params.merge(is_posted: false)), class: [(search_params[:is_posted].to_s.falsy? ? "tab active-tab" : "tab")] %>
+
+        <span class="flex-1"></span>
+
+        <%= render PreviewSizeMenuComponent.new(current_size: @preview_size) %>
+
+        <% if @mode == "table" %>
+          <%= link_to grid_icon, current_page_path(mode: nil), title: "Gallery", class: "tab" %>
+        <% else %>
+          <%= link_to list_icon, current_page_path(mode: "table"), title: "Table", class: "tab" %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @mode == "gallery" %>
+      <%= render "uploads/gallery", uploads: @uploads, size: @preview_size %>
+    <% elsif @mode == "table" %>
+      <%= render "uploads/table", uploads: @uploads %>
+    <% end %>
+  </div>
+</div>
+
+<%= render "uploads/secondary_links" %>

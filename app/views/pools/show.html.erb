@@ -1,0 +1,29 @@
+<% page_title @pool.pretty_name %>
+<% meta_description("#{number_with_delimiter(@pool.post_count)} posts. #{DText.excerpt(@pool.description)}") %>
+
+<%= render_meta_links @posts %>
+<%= render "secondary_links" %>
+
+<div id="c-pools">
+  <div id="a-show">
+    <h1>
+      <%= @pool.pretty_category %>:
+      <%= link_to @pool.pretty_name, posts_path(:tags => "pool:#{@pool.id}"), :class => "pool-category-#{@pool.category}" %>
+      <% if @pool.is_deleted? %>
+        <span class="inactive">(deleted)</span>
+      <% end %>
+    </h1>
+
+    <div id="description" class="prose mb-4">
+      <%= format_text(@pool.description) %>
+    </div>
+
+    <%= render "posts/partials/common/inline_blacklist" %>
+
+    <%= render_post_gallery(@posts, tags: "pool:#{@pool.id}", show_deleted: @pool.is_series?) do |gallery| %>
+      <% gallery.footer do %>
+        <%= numbered_paginator(@posts) %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

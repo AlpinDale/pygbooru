@@ -1,0 +1,61 @@
+# frozen_string_literal: true
+
+class TagAlias < TagRelationship
+  # Validate that the alias doesn't exist yet when it's created or when a BUR
+  # is requested, but not when a BUR is approved (to allow failed BURs to be reapproved)
+  validates :antecedent_name, uniqueness: { scope: :status, conditions: -> { active }, on: %i[create update request] }
+  validate :absence_of_transitive_relation
+
+  before_create :delete_conflicting_relationships
+
+  scope :empty, -> { joins(:consequent_tag).merge(Tag.empty) }
+
+  # Given a list of tag names, return a hash mapping aliased names to real names.
+  def self.aliases_for(names)
+    return {} if names.empty?
+
+    aliases = active.where(antecedent_name: names).map { |ta| [ta.antecedent_name, ta.consequent_name] }.to_h
+
+    abbreviations = names.select { |name| name.starts_with?("/") && !aliases.has_key?(name) }
+    abbreviations.each do |abbrev|
+      tag = Tag.nonempty.find_by_abbreviation(abbrev)
+      aliases[abbrev] = tag.name if tag.present?
+    end
+
+    aliases
+  end
+
+  # Given a list of tag names, return a new list with aliased tag names replaced by real tag names.
+  def self.to_aliased(names)
+    names = Array.wrap(names).map(&:to_s)
+    aliases = aliases_for(names)
+    names.map { |name| aliases.fetch(name, name) }
+  end
+
+  def process!
+    TagMover.new(antecedent_name, consequent_name, user: User.system).move!
+  end
+
+  # We don't want a -> b && b -> c chains if the b -> c alias was created
+  # first. If the a -> b alias was created first, the new one will be allowed
+  # and the old one will be moved automatically instead.
+  def absence_of_transitive_relation
+    return if is_rejected?
+
+    tag_alias = TagAlias.active.find_by(antecedent_name: consequent_name)
+    if tag_alias.present? && tag_alias.consequent_name != antecedent_name
+      errors.add(:base, "#{tag_alias.antecedent_name} is already aliased to #{tag_alias.consequent_name}")
+    end
+  end
+
+  # Allow aliases to be reversed. If A -> B already exists, but we're trying to
+  # create B -> A, then automatically delete A -> B so we can make B -> A.
+  # Also automatically remove implications that are being replaced by aliases
+  def delete_conflicting_relationships
+    tag_relationships = []
+    tag_relationships << TagAlias.active.find_by(antecedent_name: consequent_name, consequent_name: antecedent_name)
+    tag_relationships << TagImplication.active.find_by(antecedent_name: antecedent_name, consequent_name: consequent_name)
+    tag_relationships << TagImplication.active.find_by(antecedent_name: consequent_name, consequent_name: antecedent_name)
+    tag_relationships.each { |rel| rel.reject!(User.system) if rel.present? }
+  end
+end

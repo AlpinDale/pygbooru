@@ -1,0 +1,15 @@
+.comment-votes-tooltip {
+  max-height: 240px;
+
+  .upvote-icon {
+    color: var(--post-upvote-color);
+  }
+
+  .downvote-icon {
+    color: var(--post-downvote-color);
+  }
+
+  .comment-voter {
+    max-width: 160px;
+  }
+}

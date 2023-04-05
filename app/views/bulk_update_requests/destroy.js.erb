@@ -1,0 +1,5 @@
+if ($("#a-index").length) {
+  $("#request-status-for-<%= @bulk_update_request.id %>").html("rejected");
+} else {
+  location.reload();
+}

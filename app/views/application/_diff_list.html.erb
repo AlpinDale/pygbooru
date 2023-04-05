@@ -1,0 +1,23 @@
+<%# diff, ul_class, li_class %>
+
+<%= tag.ul class: [*ul_class] do %>
+  <% diff.added.each do |item| %>
+    <%= tag.li item, class: ["added", *li_class] %>
+  <% end %>
+
+  <% diff.removed.each do |item| %>
+    <%= tag.li item, class: ["removed", *li_class] %>
+  <% end %>
+
+  <% diff.changed.each do |old, new| %>
+    <%= tag.li class: "changed" do %>
+      <%= tag.span old, class: ["removed", *li_class] %>→ <%= tag.span new, class: ["added", *li_class]  %>
+    <% end %>
+  <% end %>
+
+  <% if show_unchanged %>
+    <% diff.unchanged.each do |item| %>
+      <%= tag.li item, class: ["unchanged", *li_class] %>
+    <% end %>
+  <% end %>
+<% end %>

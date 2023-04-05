@@ -1,0 +1,92 @@
+@import "./utilities";
+
+.ui-widget {
+  font-family: var(--body-font);
+
+  input, select, textarea, button {
+    font-family: var(--body-font);
+  }
+}
+
+.ui-widget-content {
+  background: var(--jquery-ui-widget-content-background);
+  color: var(--jquery-ui-widget-content-text-color);
+}
+
+.ui-widget-content a {
+  color: var(--link-color);
+}
+
+.ui-widget-content a:hover {
+  color: var(--link-hover-color);
+}
+
+div.ui-dialog {
+  height: auto !important;
+  overflow: visible;
+  font-size: 1em;
+  z-index: 999 !important;
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+
+  .ui-dialog-titlebar {
+    border-radius: 0;
+    border: none;
+  }
+
+  .ui-dialog-content {
+    @extend %thin-scrollbar;
+  }
+}
+
+.ui-state-highlight {
+  border: var(--jquery-ui-state-highlight-border);
+  background: var(--jquery-ui-state-highlight-background);
+  color: var(--jquery-ui-state-highlight-text-color);
+
+  a, a:active, a:visited {
+    color: var(--link-color);
+  }
+
+  a:hover {
+    color: var(--link-hover-color);
+  }
+}
+
+.ui-state-error {
+  border: var(--jquery-ui-state-error-border);
+  background: var(--jquery-ui-state-error-background);
+  color: var(--jquery-ui-state-error-text-color);
+}
+
+.ui-button {
+  margin: 0;
+  padding: 0.25em 1em;
+  border: 1px solid var(--form-button-border-color);
+  background: var(--form-button-background);
+  color: var(--form-button-text-color);
+
+  &.sub {
+    font-size: 90%;
+  }
+
+  &.tiny {
+    font-size: 90%;
+    padding: 0.25em 0.5em;
+  }
+
+  &:hover {
+    box-shadow: 0 0 2px var(--form-button-hover-box-shadow-color);
+    background: var(--form-button-hover-background);
+  }
+
+  &:active {
+    box-shadow: 0 0 2px var(--form-button-hover-box-shadow-color);
+    background: var(--form-button-active-background);
+    color: var(--form-button-text-color);
+  }
+}
+
+.ui-front {
+  z-index: 1000;
+}

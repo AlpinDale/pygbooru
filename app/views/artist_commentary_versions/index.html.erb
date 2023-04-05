@@ -1,0 +1,16 @@
+<div id="c-artist-commentary-versions">
+  <div id="a-index">
+    <h1>Artist Commentary History</h1>
+
+    <%= render "versions/types" %>
+
+    <%= render "posts/partials/common/inline_blacklist" %>
+
+    <%= render "listing" %>
+
+    <%= numbered_paginator(@commentary_versions) %>
+
+  </div>
+</div>
+
+<%= render "artist_commentaries/secondary_links" %>

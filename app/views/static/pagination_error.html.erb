@@ -1,0 +1,15 @@
+<% page_title "Page Limit Exceeded" %>
+
+<h1>Search Error</h1>
+
+<p>
+  <%= @message %>
+
+  <% if CurrentUser.is_gold? %>
+    Try narrowing your search terms.
+  <% else %>
+    Try narrowing your search terms, or <%= link_to "upgrade your account", new_user_upgrade_path  %> to go beyond page <%= CurrentUser.user.page_limit %>.
+  <% end %>
+</p>
+
+<%= link_to "Go back", :back, rel: "prev" %>

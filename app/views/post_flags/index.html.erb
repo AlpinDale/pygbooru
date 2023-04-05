@@ -1,0 +1,52 @@
+<div id="c-post-flags">
+  <div id="a-index">
+    <h1>Flags</h1>
+    <%= render "search" %>
+    <%= render "posts/partials/common/inline_blacklist" %>
+
+    <%= table_for @post_flags, width: "100%" do |t| %>
+      <% t.column "Post", width: "1%" do |post_flag| %>
+        <%= post_preview(post_flag.post, show_deleted: true) %>
+      <% end %>
+      <% t.column "Reason" do |post_flag| %>
+        <span class="prose">
+          <%= format_text post_flag.reason, inline: true %>
+        </span>
+      <% end %>
+      <% t.column "Flags", width: "1%" do |post_flag| %>
+        <%= link_to post_flag.post.flags.size, post_flags_path(search: { post_id: post_flag.post_id }) %>
+      <% end %>
+      <% t.column "Category", width: "1%" do |post_flag| %>
+        <%= link_to post_flag.category.to_s, post_flags_path(search: params[:search].merge(category: post_flag.category)) %>
+      <% end %>
+      <% t.column "Status", width: "5%" do |post_flag| %>
+        <%= link_to post_flag.status, post_flags_path(search: { status: post_flag.status }) %>
+      <% end %>
+      <% t.column "Uploaded", width: "15%" do |post_flag| %>
+        <%= link_to_user post_flag.post.uploader %>
+        <%= link_to "»", post_flags_path(search: params[:search].merge(post_tags_match: "#{params[:search][:post_tags_match]} user:#{post_flag.post.uploader.name}".strip)) %>
+        <div><%= compact_time post_flag.post.created_at %></div>
+      <% end %>
+      <% t.column "Flagged", width: "15%" do |post_flag| %>
+        <% if policy(post_flag).can_view_flagger? %>
+          <%= link_to_user post_flag.creator %>
+          <%= link_to "»", post_flags_path(search: params[:search].merge(creator_name: post_flag.creator.name)) %>
+        <% end %>
+        <div><%= compact_time post_flag.created_at %></div>
+      <% end %>
+      <% t.column "Approver", width: "15%" do |post_flag| %>
+        <% if post_flag.post.approver %>
+          <%= link_to_user post_flag.post.approver %>
+          <%= link_to "»", post_flags_path(search: params[:search].merge(post_tags_match: "#{params[:search][:post_tags_match]} approver:#{post_flag.post.approver.name}".strip)) %>
+        <% else %>
+          <em>none</em>
+          <%= link_to "»", post_flags_path(search: params[:search].merge(post_tags_match: "#{params[:search][:post_tags_match]} approver:none".strip)) %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@post_flags) %>
+  </div>
+</div>
+
+<%= render "post_events/secondary_links" %>

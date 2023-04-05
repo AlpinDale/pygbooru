@@ -1,0 +1,34 @@
+<% upload_media_asset = upload.upload_media_assets.sort_by(&:id).first %>
+<% media_asset = upload_media_asset&.media_asset %>
+<% link_target = upload.media_asset_count > 1 ? [upload, UploadMediaAsset] : upload %>
+
+<%= render(MediaAssetPreviewComponent.new(media_asset: media_asset, size: size, link_target: link_target, save_data: CurrentUser.save_data, classes: "upload-preview", html: { **data_attributes_for(upload), "data-is-posted": upload.media_asset_count == upload.posts.length })) do |preview| %>
+  <% preview.missing_image do %>
+    <% if upload.is_errored? || upload_media_asset&.failed? %>
+      Upload failed
+    <% else %>
+      Loading
+    <% end %>
+  <% end %>
+
+  <% if upload.media_asset_count > 1 %>
+    <% preview.header do %>
+      <div class="media-asset-image-count-icon absolute top-0.5 right-0.5 p-1 m-0.5 leading-none rounded text-xs font-arial font-bold">
+        <%= multiple_images_icon %>
+        <span class="align-middle"><%= upload.media_asset_count %></span>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% preview.footer do %>
+    <div class="text-center text-muted text-xs h-4">
+      <div class="leading-none">
+        <% if upload.media_asset_count == 1 && upload.posts.first&.present? %>
+          <%= link_to "post ##{upload.posts.first.id}", upload.posts.first, class: "leading-none" %>
+        <% elsif upload.media_asset_count > 1 && upload.posts.length > 0 %>
+          <%= link_to "#{upload.posts.length}/#{upload.media_asset_count} posted", posts_path(tags: "id:#{upload.posts.map(&:id).join(",")}"), class: "leading-none" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

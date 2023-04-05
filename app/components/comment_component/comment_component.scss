@@ -1,0 +1,29 @@
+article.comment {
+  &[data-is-sticky="true"] {
+    background: var(--comment-sticky-background-color);
+  }
+
+  &[data-is-reported="true"] {
+    background-color: var(--moderation-report-background-color);
+  }
+
+  &[data-is-dimmed="true"] {
+    opacity: 0.3;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &[data-is-thresholded="true"][data-show-thresholded="false"] {
+    .body { display: none; }
+  }
+
+  &[data-is-thresholded="false"], &[data-is-thresholded="true"][data-show-thresholded="true"] {
+    .unhide-comment-link { display: none; }
+  }
+
+  .moderation-report-notice {
+    color: var(--moderation-report-text-color);
+  }
+}

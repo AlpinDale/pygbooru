@@ -1,0 +1,44 @@
+<% content_for(:secondary_links) do %>
+  <%= quick_search_form_for(:body_matches, forum_posts_path, "forum posts") %>
+  <%= subnav_link_to "Listing", forum_topics_path %>
+
+  <% if policy(ForumTopic).create? %>
+    <%= subnav_link_to "New", new_forum_topic_path %>
+  <% end %>
+  <% if policy(ForumTopic).mark_all_as_read? %>
+    <%= subnav_link_to "Mark all as read", mark_all_as_read_forum_topics_path, :method => :post, :"data-shortcut" => "shift+r" %>
+  <% end %>
+  <% if @forum_topic && policy(BulkUpdateRequest.new(forum_topic: @forum_topic)).create? %>
+    <%= subnav_link_to "Request alias/implication", new_bulk_update_request_path(bulk_update_request: { forum_topic_id: @forum_topic.id }) %>
+  <% else %>
+    <%= subnav_link_to "Request alias/implication", new_bulk_update_request_path %>
+  <% end %>
+  
+  <%= subnav_link_to "Bulk Update Requests", bulk_update_requests_path %>
+  <%= subnav_link_to "Search", search_forum_posts_path %>
+  <%= subnav_link_to "Help", wiki_page_path("help:forum") %>
+  <% if !CurrentUser.user.is_anonymous? && @forum_topic && !@forum_topic.new_record? %>
+    <li>|</li>
+    <%= subnav_link_to "Reply", new_forum_post_path(:topic_id => @forum_topic.id) %>
+    <% if !@forum_topic.new_record? && policy(@forum_topic).update? %>
+      <%= subnav_link_to "Edit", edit_forum_topic_path(@forum_topic), "data-shortcut": "e" %>
+      <% if policy(@forum_topic).destroy? # XXX %>
+        <% if @forum_topic.is_deleted? %>
+          <%= subnav_link_to "Undelete", undelete_forum_topic_path(@forum_topic), :method => :post %>
+        <% else %>
+          <%= subnav_link_to "Delete", forum_topic_path(@forum_topic), :method => :delete, :"data-shortcut" => "shift+d", :"data-confirm" => "Are you sure you want to delete this forum topic?" %>
+        <% end %>
+        <% if @forum_topic.is_locked? %>
+          <%= subnav_link_to "Unlock", forum_topic_path(@forum_topic, :forum_topic => {:is_locked => false}), :method => :put %>
+        <% else %>
+          <%= subnav_link_to "Lock", forum_topic_path(@forum_topic, :forum_topic => {:is_locked => true}), :method => :put, :data => {:confirm => "Are you sure you want to lock this forum topic?"} %>
+        <% end %>
+        <% if @forum_topic.is_sticky? %>
+          <%= subnav_link_to "Unsticky", forum_topic_path(@forum_topic, :forum_topic => {:is_sticky => false}), :method => :put %>
+        <% else %>
+          <%= subnav_link_to "Sticky", forum_topic_path(@forum_topic, :forum_topic => {:is_sticky => true}), :method => :put, :data => {:confirm => "Are you sure you want to sticky this forum topic?"} %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

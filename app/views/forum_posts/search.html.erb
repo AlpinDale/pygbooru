@@ -1,0 +1,20 @@
+<div id="c-forum-posts">
+  <div id="a-search">
+    <h1>Search Forum</h1>
+
+    <%= search_form_for(forum_posts_path) do |f| %>
+      <%= f.simple_fields_for :topic do |pf| %>
+        <%= pf.input :title_matches, label: "Title" %>
+      <% end %>
+      <%= f.input :body_matches, label: "Body" %>
+      <%= f.input :creator_name, label: "Creator", input_html: { "data-autocomplete": "user" } %>
+      <%= f.input :linked_to, label: "Tag", hint: "Find posts mentioning a tag", input_html: { "data-autocomplete": "tag" } %>
+      <%= f.simple_fields_for :topic do |pf| %>
+        <%= pf.input :category_id, label: "Category", collection: ForumTopic::CATEGORIES.invert.to_a, include_blank: true %>
+      <% end %>
+      <%= f.submit "Search" %>
+    <% end %>
+  </div>
+</div>
+
+<%= render "forum_topics/secondary_links" %>

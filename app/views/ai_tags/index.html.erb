@@ -1,0 +1,41 @@
+<%= render "tags/secondary_links" %>
+
+<div id="c-ai-tags">
+  <div id="a-index">
+    <h1>AI Tags</h1>
+
+    <%= search_form_for(ai_tags_path) do |f| %>
+      <%= f.input :tag_name, label: "AI Tag", input_html: { value: params.dig(:search, :tag_name).presence || Tag.find_by(id: params.dig(:search, :tag_id))&.name, data: { autocomplete: "tag" } } %>
+      <%= f.input :post_tags_match, label: "Post Search", input_html: { value: params.dig(:search, :post_tags_match), data: { autocomplete: "tag-query" } } %>
+      <%= f.input :score, label: "Confidence", input_html: { value: params.dig(:search, :score) } %>
+      <%= f.input :is_posted, as: :hidden, input_html: { value: params.dig(:search, :is_posted) } %>
+      <%= f.input :order, collection: [%w[Newest media_asset_id], %w[Oldest media_asset_id_asc], %w[Confidence score_desc]], include_blank: true, selected: params[:search][:order] %>
+      <%= f.submit "Search" %>
+    <% end %>
+
+    <div class="tab-panel-component horizontal-tab-panel">
+      <div class="tab-list">
+        <%= link_to "Posted", current_page_path(search: search_params.merge(is_posted: true)), class: [(search_params[:is_posted].to_s.truthy? ? "tab active-tab" : "tab")] %>
+        <%= link_to "Unposted", current_page_path(search: search_params.merge(is_posted: false)), class: [(search_params[:is_posted].to_s.falsy? ? "tab active-tab" : "tab")] %>
+
+        <span class="flex-grow-1"></span>
+
+        <%= render PreviewSizeMenuComponent.new(current_size: @preview_size) %>
+
+        <% if @mode == "table" %>
+          <%= link_to grid_icon, current_page_path(mode: nil), title: "Gallery", class: "tab" %>
+        <% else %>
+          <%= link_to list_icon, current_page_path(mode: "table"), title: "Table", class: "tab" %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if params[:mode] == "table" %>
+      <%= render "ai_tags/table" %>
+    <% else %>
+      <%= render "ai_tags/gallery", ai_tags: @ai_tags, size: @preview_size %>
+    <% end %>
+
+    <%= numbered_paginator(@ai_tags) %>
+  </div>
+</div>

@@ -1,0 +1,256 @@
+@import "../base/020_base";
+@import "../common/utilities";
+
+form.simple_form {
+  margin: 0 0 1em 0;
+
+  label {
+    font-weight: bold;
+  }
+
+  fieldset.inline-fieldset {
+    > label {
+      display: block;
+    }
+
+    div.input {
+      display: inline;
+      margin-right: 2em;
+    }
+  }
+
+  div.input.boolean {
+    label {
+      display: inline;
+      font-weight: normal;
+    }
+
+    input {
+      margin-right: 0.25em;
+    }
+  }
+
+  div.input {
+    margin-bottom: 1em;
+
+    input[type="text"], input[type="file"], input[type="password"], input[type="email"], input[type="url"] {
+      width: 100%;
+      max-width: 25em;
+    }
+
+    .hint {
+      @extend %fineprint;
+      padding-left: 1em;
+
+      @media (max-width: 660px) {
+        padding-left: 0;
+        display: block;
+      }
+    }
+
+    &.field_with_errors {
+      input, select, textarea {
+        border: 1px solid var(--form-input-validation-error-border-color);
+      }
+
+      span.error {
+        display: block;
+        color: var(--form-input-validation-error-text-color);
+        font-style: italic;
+        font-size: var(--text-sm);
+      }
+    }
+
+    &.text, &.dtext {
+      .hint {
+        padding-left: 0;
+        display: block;
+      }
+
+      textarea {
+        width: 100%;
+        max-width: 60rem;
+        max-height: 15rem;
+
+        &.text  { height: 20vh; }
+        &.dtext { height: 40vh; }
+      }
+    }
+
+    select[multiple] {
+      height: 20vh;
+      max-height: 15rem;
+    }
+
+    label {
+      display: block;
+      line-height: 1.5em;
+    }
+
+    // Hide "*" in label next to required fields.
+    &.required abbr[title="required"] {
+      display: none;
+    }
+
+    &.radio_buttons {
+      span.radio {
+        display: inline-block;
+        white-space: nowrap;
+      }
+
+      span.radio label {
+        font-weight: normal;
+        display: inline;
+        margin: 0 1rem 0 0.25rem;
+        vertical-align: middle;
+      }
+
+      // Show radio buttons as a rounded button group.
+      &.radio-button-group {
+        @extend %thin-x-scrollbar;
+
+        white-space: nowrap;
+
+        input {
+          @extend %sr-only; // Visually hide <input> without using `display: none`, since that would prevent focusing it.
+        }
+
+        .radio label {
+          display: inline-block;
+          margin: 0;
+          margin-right: 0;
+          padding: 0.25rem 0.33rem;
+          border-width: 1px;
+          border-radius: 0.25rem;
+          user-select: none;
+          cursor: pointer;
+
+          &:hover {
+            color: var(--inverse-text-color);
+            background-color: var(--link-hover-color);
+            border-color: var(--link-hover-color);
+          }
+        }
+
+        input:focus ~ label {
+          box-shadow: inset 0 0 0 2px var(--link-color);
+        }
+
+        input:checked ~ label {
+          &, &:hover {
+            color: var(--inverse-text-color);
+            background-color: var(--link-color);
+            border-color: var(--link-color);
+          }
+        }
+
+        .radio:not(:last-of-type) label {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .radio:not(:first-of-type) label {
+          margin-left: -1px;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+
+        &.field_with_errors .radio label {
+          border-color: var(--chip-red-border-color);
+          background-color: var(--chip-red-background-color);
+        }
+      }
+    }
+  }
+
+  &.stacked-hints {
+    span.hint {
+      display: block;
+      padding-left: 0;
+    }
+  }
+}
+
+form.inline-form {
+  display: table;
+  width: 100%;
+
+  > div.input {
+    display: table-row;
+    line-height: 2em;
+
+    label {
+      text-align: right;
+      padding-right: 1em;
+      white-space: nowrap;
+      width: 1%;
+    }
+
+    label, input {
+      display: table-cell;
+      line-height: 1em;
+    }
+
+    span.hint {
+      line-height: 1em;
+      padding-bottom: 0.5em;
+    }
+  }
+}
+
+form.quick-search-form {
+  margin: 0;
+
+  input {
+    background: var(--quick-search-form-background);
+  }
+}
+
+form.one-line-form {
+  > input, > div.input {
+    display: inline;
+
+    label {
+      display: inline;
+      margin-right: 1em;
+    }
+  }
+}
+
+div.ui-dialog {
+  textarea, input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  form.simple_form {
+    margin-bottom: 0;
+
+    textarea, input[type="text"] {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    div.input {
+      margin-bottom: 0.5em;
+    }
+
+    div.input.hidden {
+      display: none;
+    }
+
+    div.dtext-inline span.dtext-hint {
+      display: none;
+    }
+  }
+
+  /* the submit and close buttons */
+  .ui-dialog-buttonpane {
+    margin-top: 0;
+    padding: 1em 1em 1em 0;
+
+    .ui-button {
+      margin: 0 0.25em;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+<%= render(MediaAssetGalleryComponent.new(size: size)) do |gallery| %>
+  <% uploads.each do |upload| %>
+    <% gallery.media_asset do %>
+      <%= render "uploads/preview", upload: upload, size: gallery.size %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= numbered_paginator(uploads) %>

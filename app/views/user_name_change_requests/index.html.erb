@@ -1,0 +1,27 @@
+<div id="c-user-name-change-requests">
+  <div id="a-index">
+    <h1>Name Change Requests</h1>
+
+    <%= table_for @change_requests, width: "100%" do |t| %>
+      <% t.column "User" do |change_request| %>
+        <%= link_to_user change_request.user %>
+      <% end %>
+      <% t.column "Old Name" do |change_request| %>
+        <%= change_request.original_name %>
+      <% end %>
+      <% t.column "New Name" do |change_request| %>
+        <%= change_request.desired_name %>
+      <% end %>
+      <% t.column "Date" do |change_request| %>
+        <%= compact_time change_request.created_at %>
+      <% end %>
+      <% t.column column: "control" do |change_request| %>
+        <%= link_to "view", user_name_change_request_path(change_request) %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@change_requests) %>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

@@ -1,0 +1,14 @@
+div.source-data {
+  &:not(.loading) .source-data-loading { display: none; }
+  &.loading .source-data-content { display: none; }
+  &.loading .source-data-fetch { display: none; }
+
+  th {
+    padding-right: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  td {
+    vertical-align: top;
+  }
+}

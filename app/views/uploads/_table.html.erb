@@ -1,0 +1,55 @@
+<%= table_for uploads, class: "striped", width: "100%" do |t| %>
+  <% t.column "Upload", td: { class: "text-center" } do |upload| %>
+    <%= render "uploads/preview", upload: upload, size: "180" %>
+  <% end %>
+
+  <% t.column "Info", td: { class: "col-expand" } do |upload| %>
+    <div>
+      <strong>Upload</strong>
+      <span><%= link_to "##{upload.id}", upload %></span>
+    </div>
+
+    <div>
+      <strong>Source</strong>
+      <span>
+        <% if upload.source.present? %>
+          <%= external_link_to upload.source %>
+          <%= link_to "»", uploads_path(mode: "table", search: params[:search].merge(source_like: upload.source)) %>
+        <% else %>
+          <em>none</em>
+        <% end %>
+      </span>
+    </div>
+
+    <% if upload.referer_url.present? %>
+      <div>
+        <strong>Referrer</strong>
+        <span>
+          <%= external_link_to upload.referer_url %>
+          <%= link_to "»", uploads_path(mode: "table", search: params[:search].merge(referer_url: upload.referer_url)) %>
+        </span>
+      </div>
+    <% end %>
+
+    <% if upload.is_errored? %>
+      <div>
+        <strong>Error</strong>
+        <span>
+          <%= upload.error %>
+        </span>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% t.column "Uploader" do |upload| %>
+    <%= link_to_user upload.uploader %>
+    <%= link_to "»", uploads_path(mode: "table", search: params[:search].merge(uploader_name: upload.uploader.name)) %>
+    <div><%= time_ago_in_words_tagged upload.created_at %></div>
+  <% end %>
+
+  <% t.column :status do |upload| %>
+    <%= upload.status %>
+  <% end %>
+<% end %>
+
+<%= numbered_paginator(uploads) %>

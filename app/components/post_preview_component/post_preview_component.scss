@@ -1,0 +1,131 @@
+@import "../../javascript/src/styles/base/000_vars";
+
+article.post-preview {
+  .post-preview-link {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+
+    .post-animation-icon {
+      color: var(--preview-icon-color);
+      background: var(--preview-icon-background);
+    }
+  }
+
+  .desc {
+    font-size: var(--text-sm);
+    margin-bottom: 0;
+    text-align: center;
+  }
+}
+
+.post-preview-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.post-preview-fit-fixed {
+  display: inline-flex;
+  flex-direction: column;
+  place-items: center;
+
+  &.post-preview-150  { width: 150px; }
+  &.post-preview-180  { width: 180px; }
+  &.post-preview-225  { width: 225px; }
+  &.post-preview-225w { width: 225px; }
+  &.post-preview-270  { width: 270px; }
+  &.post-preview-270w { width: 270px; }
+  &.post-preview-360  { width: 360px; }
+  &.post-preview-540  { width: 540px; }
+  &.post-preview-720  { width: 720px; }
+}
+
+.post-preview-150  .post-preview-image { max-height: 150px; width: auto; }
+.post-preview-180  .post-preview-image { max-height: 180px; width: auto; }
+.post-preview-225  .post-preview-image { max-height: 225px; width: auto; }
+.post-preview-225w .post-preview-image { max-height: 360px; width: auto; }
+.post-preview-270  .post-preview-image { max-height: 270px; width: auto; }
+.post-preview-270w .post-preview-image { max-height: 360px; width: auto; }
+.post-preview-360  .post-preview-image { max-height: 360px; width: auto; }
+.post-preview-540  .post-preview-image { max-height: 540px; width: auto; }
+.post-preview-720  .post-preview-image { max-height: 720px; width: auto; }
+
+.post-preview {
+  .post-preview-image {
+    border: 2px solid transparent;
+  }
+
+  &.post-status-has-children .post-preview-image {
+    border-color: var(--preview-has-children-color);
+  }
+
+  &.post-status-has-parent .post-preview-image {
+    border-color: var(--preview-has-parent-color);
+  }
+
+  &.post-status-has-children.post-status-has-parent .post-preview-image {
+    border-color: var(--preview-has-children-color) var(--preview-has-parent-color) var(--preview-has-parent-color) var(--preview-has-children-color);
+  }
+
+  &.post-status-deleted .post-preview-image {
+    border-color: var(--preview-deleted-color);
+  }
+
+  &.post-status-has-children.post-status-deleted .post-preview-image {
+    border-color: var(--preview-has-children-color) var(--preview-deleted-color) var(--preview-deleted-color) var(--preview-has-children-color);
+  }
+
+  &.post-status-has-parent.post-status-deleted .post-preview-image {
+    border-color: var(--preview-has-parent-color) var(--preview-deleted-color) var(--preview-deleted-color) var(--preview-has-parent-color);
+  }
+
+  &.post-status-has-children.post-status-has-parent.post-status-deleted .post-preview-image {
+    border-color: var(--preview-has-children-color) var(--preview-deleted-color) var(--preview-deleted-color) var(--preview-has-parent-color);
+  }
+
+  /* Pending and flagged posts have blue borders (except in the modqueue). */
+  &.post-status-pending:not(.mod-queue-preview) .post-preview-image,
+  &.post-status-flagged:not(.mod-queue-preview) .post-preview-image {
+    border-color: var(--preview-pending-color);
+  }
+
+  &.post-status-has-children.post-status-pending:not(.mod-queue-preview) .post-preview-image,
+  &.post-status-has-children.post-status-flagged:not(.mod-queue-preview) .post-preview-image {
+    border-color: var(--preview-has-children-color) var(--preview-pending-color) var(--preview-pending-color) var(--preview-has-children-color);
+  }
+
+  &.post-status-has-parent.post-status-pending:not(.mod-queue-preview) .post-preview-image,
+  &.post-status-has-parent.post-status-flagged:not(.mod-queue-preview) .post-preview-image {
+    border-color: var(--preview-has-parent-color) var(--preview-pending-color) var(--preview-pending-color) var(--preview-has-parent-color);
+  }
+
+  &.post-status-has-children.post-status-has-parent.post-status-pending:not(.mod-queue-preview) .post-preview-image,
+  &.post-status-has-children.post-status-has-parent.post-status-flagged:not(.mod-queue-preview) .post-preview-image {
+    border-color: var(--preview-has-children-color) var(--preview-pending-color) var(--preview-pending-color) var(--preview-has-parent-color);
+  }
+}
+
+/* Flagged posts have red borders for approvers. */
+body[data-current-user-is-approver="true"] .post-preview {
+  &.post-status-flagged .post-preview-image {
+    border-color: var(--preview-flagged-color);
+  }
+
+  &.post-status-has-children.post-status-flagged .post-preview-image {
+    border-color: var(--preview-has-children-color) var(--preview-flagged-color) var(--preview-flagged-color) var(--preview-has-children-color);
+  }
+
+  &.post-status-has-parent.post-status-flagged .post-preview-image {
+    border-color: var(--preview-has-parent-color) var(--preview-flagged-color) var(--preview-flagged-color) var(--preview-has-parent-color);
+  }
+
+  &.post-status-has-children.post-status-has-parent.post-status-flagged .post-preview-image {
+    border-color: var(--preview-has-children-color) var(--preview-flagged-color) var(--preview-flagged-color) var(--preview-has-parent-color);
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .post-preview-image {
+    border: none !important;
+  }
+}

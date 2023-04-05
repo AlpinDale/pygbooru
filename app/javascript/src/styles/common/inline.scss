@@ -1,0 +1,29 @@
+span.link {
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+span.count {
+  color: var(--tag-count-color);
+  margin-left: 0.5em;
+}
+
+kbd.key {
+  background: var(--keyboard-shortcut-background-color);
+  border: 1px solid var(--keyboard-shortcut-background-color);
+  padding: 1px 6px;
+  color: var(--keyboard-shortcut-color);
+  text-align: center;
+  display: inline-block;
+  border-radius: 3px;
+}
+
+/* used for "(deleted)" messages */
+div.inactive, span.inactive {
+  color: var(--muted-text-color);
+}
+
+/* used for "page N" links in /forum_topics and /pools */
+td a.last-page {
+  color: var(--muted-text-color);
+}

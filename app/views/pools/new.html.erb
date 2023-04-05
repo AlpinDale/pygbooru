@@ -1,0 +1,18 @@
+<div id="c-pools">
+  <div id="c-new">
+    <h1>New Pool</h1>
+
+    <%= embed_wiki("help:pool_notice") %>
+
+    <%= edit_form_for(@pool) do |f| %>
+      <%= f.input :name, :as => :string, :required => true %>
+      <%= f.input :description, as: :dtext %>
+      <%= f.input :post_ids_string, as: :text, label: "Posts" %>
+      <%= f.input :category, :collection => ["series", "collection"], :include_blank => true, :selected => "", :required => true %>
+      <%= f.button :submit, "Submit" %>
+      <%= dtext_preview_button "pool_description" %>
+    <% end %>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

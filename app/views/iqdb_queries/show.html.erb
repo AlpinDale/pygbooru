@@ -1,0 +1,23 @@
+<% page_title "Similar Images Search" %>
+<% noindex if params[:search].present? %>
+
+<div id="c-iqdb-queries">
+  <div id="a-check">
+    <h1>Reverse Images Search</h1>
+    <section>
+      <p>Paste a URL or upload a file to perform a reverse image search on <%= Danbooru.config.app_name %>.</p>
+
+      <%= search_form_for(iqdb_queries_path, method: :post) do |f| %>
+        <%= f.input :post_id, label: "Post ID", input_html: { value: params[:search][:post_id] } %>
+        <%= f.input :url, input_html: { value: params[:search][:url] } %>
+        <%= f.input :hash, input_html: { value: params[:search][:hash] } %>
+        <%= f.input :file, as: :file %>
+        <%= f.submit "Search" %>
+      <% end %>
+    </section>
+
+    <%= render "iqdb_queries/matches" %>
+  </div>
+</div>
+
+<%= render "uploads/secondary_links" %>

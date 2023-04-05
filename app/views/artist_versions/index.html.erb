@@ -1,0 +1,14 @@
+<div id="c-artist-versions">
+  <div id="a-index">
+    <h1>Artist History</h1>
+
+    <%= render "versions/types" %>
+
+    <%= render "listing" %>
+
+    <%= numbered_paginator(@artist_versions) %>
+
+  </div>
+</div>
+
+<%= render "artists/secondary_links" %>

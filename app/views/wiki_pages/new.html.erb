@@ -1,0 +1,29 @@
+<%= render "sidebar" %>
+
+<% content_for(:content) do %>
+  <h1>New Wiki Page</h1>
+
+  <% if @wiki_page.title.present? %>
+    <div class="notice notice-info notice-small" id="new-wiki-page-notice">
+      This wiki page does not yet exist. The form below will allow you to create a new page for <%= @wiki_page.title %>. It will act as an explanation on how to use the tag for other users on the site.
+    </div>
+  <% end %>
+
+  <%= edit_form_for(@wiki_page) do |f| %>
+    <%= f.input :title, error: false, input_html: { data: { autocomplete: "tag" } } %>
+    <%= f.input :other_names_string, as: :string, label: "Other names (#{link_to_wiki "help", "help:translated_tags"})".html_safe, hint: "Names used for this tag on other sites such as Pixiv. Separate with spaces." %>
+    <%= f.input :body, as: :dtext %>
+    <%= f.submit "Submit" %>
+    <%= dtext_preview_button "wiki_page_body" %>
+  <% end %>
+
+  <%= render "tag_relationships/alias_and_implication_list", tag: @wiki_page.tag %>
+
+  <% if @wiki_page.tag&.is_deprecated? %>
+    <p class="fineprint">This tag is <%= link_to "deprecated", wiki_page_path("help:deprecation_notice") %> and can't be added to new posts.</p>
+  <% end %>
+
+  <%= render "wiki_pages/posts", wiki_page: @wiki_page %>
+<% end %>
+
+<%= render "secondary_links" %>

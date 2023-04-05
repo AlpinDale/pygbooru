@@ -1,0 +1,8 @@
+This post has <%= link_to pluralize(children.length, "child"), posts_path(tags: "parent:#{parent.id}"), rel: "nofollow" %>
+
+(<%= link_to_wiki "learn more", "help:post_relationships" %>)
+<%= link_to("« hide", "#", id: "has-children-relationship-preview-link") %>
+
+<div id="has-children-relationship-preview">
+  <%= render_post_gallery([parent, *children], tags: "parent:#{parent.id}", show_deleted: true, inline: true, size: "150") %>
+</div>

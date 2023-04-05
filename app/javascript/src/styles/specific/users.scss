@@ -1,0 +1,25 @@
+div#c-users {
+  div#a-show {
+    table.user-statistics {
+      th {
+        width: 15%;
+        text-align: right;
+        padding-right: 1em;
+      }
+
+      .user-verified-email-icon {
+        color: var(--user-verified-email-color);
+      }
+
+      .user-unverified-email-icon {
+        color: var(--user-unverified-email-color);
+      }
+    }
+  }
+
+  div#a-edit {
+    div.input {
+      margin-bottom: 2em;
+    }
+  }
+}

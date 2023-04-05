@@ -1,0 +1,11 @@
+body[data-mode-menu-active="true"] .post-preview-container a:hover {
+  outline: 4px solid var(--post-mode-menu-active-post-outline-color);
+}
+
+body.mode-translation {
+  background-color: var(--post-mode-menu-translation-background);
+}
+
+#page, #top, #page-footer {
+  background-color: var(--body-background-color);
+}

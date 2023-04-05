@@ -1,0 +1,13 @@
+<div id="c-forum-posts">
+  <div id="a-new">
+    <% if @forum_post.topic.present? %>
+      <h1>Reply to <%= @forum_post.topic.title %></h1>
+    <% else %>
+      <h1>New Forum Post</h1>
+    <% end %>
+
+    <%= render "forum_posts/partials/new/form", :forum_post => @forum_post %>
+  </div>
+</div>
+
+<%= render "forum_topics/secondary_links" %>

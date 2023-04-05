@@ -1,0 +1,22 @@
+#related-tags-container {
+  .related-tags-body {
+    height: 30rem;
+  }
+
+  li.selected a {
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-text-stroke
+    // https://caniuse.com/text-stroke
+    -webkit-text-stroke: 0.5px;
+  }
+
+  /* On computers with a mouse, hide the related tag checkbox unless it's checked or hovered. */
+  @media (hover: hover) {
+    input[type="checkbox"] {
+      visibility: hidden;
+    }
+
+    li.selected, li:hover {
+      input[type="checkbox"] { visibility: visible; }
+    }
+  }
+}

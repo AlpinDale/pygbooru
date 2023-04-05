@@ -1,0 +1,13 @@
+div#c-wiki-page-versions {
+  #a-diff {
+    ul.wiki-other-names-diff-list li.removed {
+      background: var(--wiki-page-versions-diff-del-background);
+      text-decoration: none;
+    }
+
+    ul.wiki-other-names-diff-list li.added {
+      background: var(--wiki-page-versions-diff-ins-background);
+      text-decoration: none;
+    }
+  }
+}

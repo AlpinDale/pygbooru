@@ -1,0 +1,49 @@
+<div id="c-saved-searches">
+  <div id="a-index">
+    <h1>
+      Saved Searches
+      <% if params[:label] %>
+        (<%= params[:label] %>)
+      <% end %>
+    </h1>
+
+    <%= search_form_for(saved_searches_path) do |f| %>
+      <%= f.input :query_ilike, label: "Query", input_html: { value: params[:search][:query_ilike] } %>
+      <%= f.input :label, label: "Label", input_html: { value: params[:search][:label], "data-autocomplete": "saved-search-label" } %>
+      <%= f.input :order, collection: [%w[Newest id], %w[Query query], %w[Label label]], include_blank: false, selected: params[:search][:order] %>
+      <%= f.submit "Search" %>
+    <% end %>
+
+    <%= table_for @saved_searches, class: "striped autofit", width: "100%" do |t| %>
+      <% t.column "Query", th: {"data-sort": "string"}, td: {class: "col-expand"} do |ss| %>
+        <%= link_to ss.query, posts_path(tags: ss.query) %>
+      <% end %>
+      <% t.column "Labels", th: {"data-sort": "string"} do |ss| %>
+        <% ss.labels.each do |label| %>
+          <%= link_to label, posts_path(:tags => "search:#{label}") %>
+        <% end %>
+      <% end %>
+      <% t.column "Posts" do |ss| %>
+        <%= ss.cached_size if ss.cached_size > 0 %>
+      <% end %>
+      <% t.column "Refreshed" do |ss| %>
+        <% if ss.refreshed_at.present? %>
+          <%= time_ago_in_words_tagged ss.refreshed_at %>
+        <% else %>
+          &gt;<%= SavedSearch::REDIS_EXPIRY.inspect %> ago
+        <% end %>
+      <% end %>
+      <% t.column "Created" do |ss| %>
+        <%= time_ago_in_words_tagged ss.created_at %>
+      <% end %>
+      <% t.column column: "control" do |ss| %>
+        <%= link_to "edit", edit_saved_search_path(ss) %>
+          | <%= link_to "delete", saved_search_path(ss), :method => :delete, :remote => true %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@saved_searches) %>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

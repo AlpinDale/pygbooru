@@ -1,0 +1,37 @@
+<div id="c-bans">
+  <div id="a-index">
+    <h1>Bans</h1>
+
+    <%= render "search" %>
+
+    <%= table_for @bans, class: "striped autofit" do |t| %>
+      <% t.column "Banned User" do |ban| %>
+        <%= link_to_user(ban.user) %>
+        <%= link_to "»", bans_path(search: search_params.merge(user_name: ban.user.name)) %>
+      <% end %>
+      <% t.column "Reason", td: {class: "col-expand"} do |ban| %>
+        <div class="prose">
+          <%= format_text ban.reason %>
+        </div>
+      <% end %>
+      <% t.column "Duration" do |ban| %>
+        <%= humanized_duration(ban.duration) %>
+      <% end %>
+      <% t.column "Banner" do |ban| %>
+        <%= link_to_user ban.banner %>
+        <%= link_to "»", bans_path(search: { banner_name: ban.banner.name }) %>
+        <div><%= time_ago_in_words_tagged(ban.created_at) %></div>
+      <% end %>
+      <% t.column column: "control" do |ban| %>
+        <% if policy(ban).update? %>
+          <%= link_to "Edit", edit_ban_path(ban) %>
+          | <%= link_to "Delete", ban_path(ban), :method => :delete, :remote => true %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@bans) %>
+  </div>
+</div>
+
+<%= render "secondary_links" %>

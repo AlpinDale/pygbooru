@@ -1,0 +1,30 @@
+<% page_title "Order Pool" %>
+<%= render "pools/secondary_links" %>
+
+<div id="c-pool-orders">
+  <div id="a-edit">
+    <h1>Order Pool: <%= @pool.pretty_name %></h1>
+
+    <%= edit_form_for(@pool, format: :js, html: { id: "ordering-form" }) do |f| %>
+      <% if @pool.post_count <= Pool::POOL_ORDER_LIMIT %>
+        <p>Drag and drop the list below to determine ordering.</p>
+
+        <%= render "posts/partials/common/inline_blacklist" %>
+
+        <ul id="sortable">
+          <% @pool.posts.includes(:media_asset).each do |post| %>
+            <%= tag.li id: "pool[post_ids]_#{post.id}" do -%>
+              <%= post_preview(post, show_deleted: true).presence || "Hidden: Post ##{post.id}" -%>
+            <% end -%>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>Reorder the post IDs in the text box below to reorder the pool.</p>
+
+        <%= f.input :post_ids_string, as: :text, label: "Posts" %>
+      <% end %>
+
+      <%= f.submit "Save" %>
+    <% end %>
+  </div>
+</div>

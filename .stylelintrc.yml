@@ -1,0 +1,15 @@
+extends: "stylelint-config-standard-scss"
+rules:
+  color-hex-length: long
+  custom-property-empty-line-before: null
+  declaration-block-single-line-max-declarations: null
+  declaration-empty-line-before: null
+  font-family-name-quotes: always-unless-keyword
+  no-descending-specificity: null
+  selector-class-pattern: "[a-z_-]+"
+  selector-id-pattern: "[a-z_-]+"
+  scss/dollar-variable-pattern: "[a-z_-]+"
+  scss/operator-no-unspaced: null
+  scss/comment-no-empty: null
+  shorthand-property-no-redundant-values: null
+  declaration-block-no-redundant-longhand-properties: null

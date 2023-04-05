@@ -1,0 +1,11 @@
+<% if @favorite.errors.any? %>
+  Danbooru.Utility.error("You have already favorited this post");
+<% else %>
+  $("#add-to-favorites, #add-fav-button, #remove-from-favorites, #remove-fav-button").toggle();
+  $("#remove-fav-button").addClass("animate");
+  $("span.post-votes[data-id=<%= @post.id %>]").replaceWith("<%= j render_post_votes @post, current_user: CurrentUser.user %>");
+  $("span.post-favcount[data-id=<%= @post.id %>]").html("<%= j link_to @post.fav_count, favorites_path(post_id: @post.id, variant: :compact) %>");
+  $(".fav-buttons").toggleClass("fav-buttons-false").toggleClass("fav-buttons-true");
+
+  Danbooru.Utility.notice("<%= j flash[:notice] %>");
+<% end %>

@@ -1,0 +1,30 @@
+div#notice {
+  box-shadow: var(--shadow-lg);
+}
+
+.notice {
+  border-radius: 3px;
+}
+
+.notice-small {
+  font-size: 0.8em;
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+}
+
+.notice-large {
+  margin: 1em 0;
+  padding: 1em;
+  text-align: center;
+  position: relative;
+}
+
+.notice-info {
+  background: var(--notice-info-background);
+  border: 1px solid var(--notice-info-border-color);
+}
+
+.notice-error {
+  background: var(--notice-error-background);
+  border: 1px solid var(--notice-error-border-color);
+}

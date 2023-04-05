@@ -1,0 +1,56 @@
+<%= tag.article id: "post_#{post.id}", **article_attrs do -%>
+  <div class="post-preview-container">
+    <%= link_to polymorphic_path(link_target, q: tags), class: "post-preview-link", draggable: "false" do -%>
+      <% if is_animated? || has_sound? %>
+        <div class="post-animation-icon absolute top-0.5 left-0.5 p-0.5 m-0.5 leading-none rounded text-xs font-arial font-bold">
+          <% if is_animated? %>
+            <span class="post-duration align-middle">
+              <%= duration_to_hhmmss(duration) %>
+            </span>
+          <% end %>
+          <% if has_sound? %>
+            <%= sound_icon(class: "h-3 mx-0.5") -%>
+          <% end %>
+        </div>
+      <% end %>
+
+      <picture>
+        <% if media_asset.is_flash? %>
+          <%= tag.img src: "/images/flash-preview.png", class: "post-preview-image", title: tooltip, alt: "post ##{post.id}", draggable: "false" -%>
+        <% else %>
+          <% unless save_data %>
+            <% case size %>
+            <% when "150", "180" %>
+              <%= tag.source type: "image/jpeg", srcset: "#{media_asset.variant("180x180").file_url} 1x, #{media_asset.variant("360x360").file_url} 2x" %>
+            <% when "225", "225w", "270", "270w", "360" %>
+              <%= tag.source type: "image/webp", srcset: "#{media_asset.variant("360x360").file_url} 1x, #{media_asset.variant("720x720").file_url} 2x" %>
+            <% end %>
+          <% end %>
+
+          <%= tag.img src: variant.file_url, width: variant.width, height: variant.height, class: "post-preview-image", title: tooltip, alt: "post ##{post.id}", draggable: "false" -%>
+        <% end %>
+      </picture>
+    <% end -%>
+  </div>
+  <% if pool -%>
+    <p class="desc">
+      <%= link_to pool.pretty_name.truncate(80), pool %>
+    </p>
+  <% elsif recommended -%>
+    <p class="desc recommended">
+      <%= link_to recommended_posts_path(search: { post_id: post.id }), class: "more-recommended-posts", "data-post-id": post.id do %>
+        <%= post.fav_count %>
+
+        <%= empty_heart_icon(class: "fa-xs") %>
+
+        <br>more »
+      <% end %>
+    </p>
+  <% elsif show_votes -%>
+    <div class="post-preview-score text-sm text-center mt-1">
+      <%= render_post_votes post, current_user: current_user %>
+    </div>
+  <% end -%>
+
+  <%= footer %>
+<% end -%>

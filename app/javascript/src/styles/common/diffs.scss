@@ -1,0 +1,41 @@
+.diff-list {
+  .added, .added a {
+    color: var(--diff-list-added-color);
+    text-decoration: none;
+    margin-right: 0.5em;
+  }
+
+  .removed, .removed a {
+    color: var(--diff-list-removed-color);
+    text-decoration: line-through;
+    margin-right: 0.5em;
+  }
+
+  ins, ins a {
+    color: var(--diff-list-added-color);
+    text-decoration: none;
+    margin-right: 0.5em;
+  }
+
+  del, del a {
+    color: var(--diff-list-removed-color);
+    text-decoration: line-through;
+    margin-right: 0.5em;
+  }
+}
+
+.diff-body {
+  del {
+    background: var(--wiki-page-versions-diff-del-background);
+    text-decoration: none;
+  }
+
+  ins {
+    background: var(--wiki-page-versions-diff-ins-background);
+    text-decoration: none;
+  }
+
+  span.paragraph-mark {
+    opacity: 0.25;
+  }
+}

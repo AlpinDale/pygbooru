@@ -1,0 +1,43 @@
+<p>If the artist of this image posted some interesting additional information about this work, you can copy it here (<%= link_to_wiki "learn more", "help:artist_commentary" %>).</p>
+
+<form id="fetch-commentary" class="simple_form">
+  <div class="input">
+    <label>Copy from</label>
+    <%= select_tag :commentary_source_type, options_for_select(%w[Source Post]) %>
+    <%= text_field_tag :commentary_source, post.source %>
+    <%= text_field_tag :commentary_post_id, post.parent_id, :style => "display: none;" %>
+    <%= button_tag "Fetch" %>
+  </div>
+</form>
+
+<%= edit_form_for(artist_commentary, url: create_or_update_post_artist_commentary_path(post_id: post.id, format: :js), remote: true, method: :put, html: { id: "edit-commentary" }) do |f| %>
+  <%= f.input :original_title, as: :string, input_html: { value: artist_commentary.try(:original_title) } %>
+  <%= f.input :original_description, input_html: { value: artist_commentary.try(:original_description) } %>
+
+  <%= f.input :translated_title, as: :string, input_html: { value: artist_commentary.try(:translated_title) } %>
+  <%= f.input :translated_description, input_html: { value: artist_commentary.try(:translated_description) } %>
+
+  <% if post.has_tag?("commentary") %>
+    <%= f.input :remove_commentary_tag, as: :boolean %>
+  <% else %>
+    <%= f.input :add_commentary_tag, as: :boolean %>
+  <% end %>
+
+  <% if post.has_tag?("commentary_request") %>
+    <%= f.input :remove_commentary_request_tag, as: :boolean %>
+  <% else %>
+    <%= f.input :add_commentary_request_tag, as: :boolean %>
+  <% end %>
+
+  <% if post.has_tag?("check_commentary") %>
+    <%= f.input :remove_commentary_check_tag, as: :boolean %>
+  <% else %>
+    <%= f.input :add_commentary_check_tag, as: :boolean %>
+  <% end %>
+
+  <% if post.has_tag?("partial_commentary") %>
+    <%= f.input :remove_partial_commentary_tag, as: :boolean %>
+  <% else %>
+    <%= f.input :add_partial_commentary_tag, as: :boolean %>
+  <% end %>
+<% end %>

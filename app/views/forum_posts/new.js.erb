@@ -1,0 +1,8 @@
+var msg = <%= raw @forum_post.body.to_json %>;
+if ($("#forum_post_body").val().length > 0) {
+  msg = $("#forum_post_body").val() + "\n\n" + msg;
+}
+$("#forum_post_body").val(msg);
+$("#topic-response").show();
+$("#forum_post_body").get(0).scrollIntoView(false);
+$("#forum_post_body").selectEnd();

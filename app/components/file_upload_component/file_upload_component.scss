@@ -1,0 +1,21 @@
+.file-upload-component {
+  .dropzone-container {
+    background: var(--uploads-dropzone-background);
+
+    &.error {
+      background: var(--error-background-color);
+    }
+
+    &.success {
+      background: var(--success-background-color);
+    }
+  }
+
+  .dz-progress {
+    background-color: var(--uploads-dropzone-progress-bar-background-color);
+
+    .dz-upload {
+      background-color: var(--uploads-dropzone-progress-bar-foreground-color);
+    }
+  }
+}

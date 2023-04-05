@@ -1,0 +1,11 @@
+<%= edit_form_for(comment, namespace: "post_#{comment&.post_id}_comment_#{comment.id || "new"}", html: { style: ("display: none;" if local_assigns[:hidden]), class: "edit_comment" }) do |f| %>
+  <% if comment.new_record? %>
+    <%= f.hidden_field :post_id %>
+  <% end %>
+  <%= f.input :body, as: :dtext %>
+  <%= f.button :submit, "Submit" %>
+  <%= dtext_preview_button "comment_body" %>
+  <% if comment.new_record? %>
+    <%= f.input :do_not_bump_post, label: "No bump", wrapper_html: { class: "inline-block" } %>
+  <% end %>
+<% end %>

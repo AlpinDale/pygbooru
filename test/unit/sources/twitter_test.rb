@@ -1,0 +1,303 @@
+require 'test_helper'
+
+module Sources
+  class TwitterTest < ActiveSupport::TestCase
+    context "A https://twitter.com/:username/status/:id url" do
+      strategy_should_work(
+        "https://twitter.com/motty08111213/status/943446161586733056",
+        page_url: "https://twitter.com/motty08111213/status/943446161586733056",
+        image_urls: [
+          "https://pbs.twimg.com/media/DRfKHmgV4AAycFB.jpg:orig",
+          "https://pbs.twimg.com/media/DRfKHioVoAALRlK.jpg:orig",
+          "https://pbs.twimg.com/media/DRfKHgHU8AE7alV.jpg:orig",
+        ],
+        download_size: 275_713,
+        profile_url: "https://twitter.com/motty08111213",
+        artist_name: "丸茂_えのぐマネージャー",
+        tag_name: "motty08111213",
+        tags: ["岩本町芸能社", "女優部"],
+        dtext_artist_commentary_desc: <<~EOS.chomp
+          岩本町芸能社女優部のタレント3名がHPに公開されました。
+          部署が違うので私の担当ではありませんが、みんなとても良い子たちです。
+          あんずと環 同様、応援していただけると嬉しいです…！
+          詳細はこちらから↓
+          <http://rbc-geino.com/profile_2/>
+          "#岩本町芸能社":[https://twitter.com/hashtag/岩本町芸能社] "#女優部":[https://twitter.com/hashtag/女優部]
+        EOS
+      )
+    end
+
+    context "A https://twitter.com/i/web/status/:id url" do
+      strategy_should_work(
+        "https://twitter.com/i/web/status/943446161586733056",
+        page_url: "https://twitter.com/motty08111213/status/943446161586733056",
+        image_urls: [
+          "https://pbs.twimg.com/media/DRfKHmgV4AAycFB.jpg:orig",
+          "https://pbs.twimg.com/media/DRfKHioVoAALRlK.jpg:orig",
+          "https://pbs.twimg.com/media/DRfKHgHU8AE7alV.jpg:orig",
+        ],
+        download_size: 275_713,
+        profile_url: "https://twitter.com/motty08111213",
+        artist_name: "丸茂_えのぐマネージャー",
+        tag_name: "motty08111213",
+        tags: ["岩本町芸能社", "女優部"]
+      )
+    end
+
+    context "A https://twitter.com/i/status/:id url" do
+      strategy_should_work(
+        "https://twitter.com/i/status/943446161586733056",
+        page_url: "https://twitter.com/motty08111213/status/943446161586733056",
+        image_urls: [
+          "https://pbs.twimg.com/media/DRfKHmgV4AAycFB.jpg:orig",
+          "https://pbs.twimg.com/media/DRfKHioVoAALRlK.jpg:orig",
+          "https://pbs.twimg.com/media/DRfKHgHU8AE7alV.jpg:orig",
+        ],
+        download_size: 275_713,
+        profile_url: "https://twitter.com/motty08111213",
+        artist_name: "丸茂_えのぐマネージャー",
+        tag_name: "motty08111213",
+        tags: ["岩本町芸能社", "女優部"]
+      )
+    end
+
+    context "A video tweet" do
+      strategy_should_work(
+        "https://twitter.com/CincinnatiZoo/status/859073537713328129",
+        image_urls: ["https://video.twimg.com/ext_tw_video/859073467769126913/pu/vid/1280x720/cPGgVROXHy3yrK6u.mp4"],
+        page_url: "https://twitter.com/CincinnatiZoo/status/859073537713328129",
+        download_size: 8_602_983,
+        dtext_artist_commentary_desc: <<~EOS.chomp
+          Fiona loves playing in the hose water just like her parents! 💦 "#TeamFiona":[https://twitter.com/hashtag/TeamFiona] "#fionafix":[https://twitter.com/hashtag/fionafix]
+        EOS
+      )
+    end
+
+    context "A video thumbnail" do
+      # https://twitter.com/Kekeflipnote/status/1241038667898118144
+      strategy_should_work(
+        "https://pbs.twimg.com/tweet_video_thumb/ETkN_L3X0AMy1aT.jpg:small",
+        image_urls: ["https://pbs.twimg.com/tweet_video_thumb/ETkN_L3X0AMy1aT.jpg:orig"],
+        download_size: 18_058
+      )
+    end
+
+    context "An external video thumbnail" do
+      strategy_should_work(
+        "https://pbs.twimg.com/ext_tw_video_thumb/1578376127801761793/pu/img/oGcUqPnwRYYhk-gi.jpg:small",
+        image_urls: ["https://pbs.twimg.com/ext_tw_video_thumb/1578376127801761793/pu/img/oGcUqPnwRYYhk-gi.jpg:orig"],
+        download_size: 243_227
+      )
+    end
+
+    context "An amplify video thumbnail" do
+      # https://twitter.com/UNITED_CINEMAS/status/1223138847417978881
+      strategy_should_work(
+        "https://pbs.twimg.com/amplify_video_thumb/1215590775364259840/img/lolCkEEioFZTb5dl.jpg:small",
+        image_urls: ["https://pbs.twimg.com/amplify_video_thumb/1215590775364259840/img/lolCkEEioFZTb5dl.jpg:orig"],
+        download_size: 106_942
+      )
+    end
+
+    context "A tweet with an animated gif" do
+      strategy_should_work(
+        "https://twitter.com/i/web/status/1252517866059907073",
+        image_urls: ["https://video.twimg.com/tweet_video/EWHWVrmVcAAp4Vw.mp4"],
+        download_size: 542_833,
+        artist_commentary_desc: "https://t.co/gyTKOSBOQ7",
+        dtext_artist_commentary_desc: ""
+      )
+    end
+
+    context "A mixed-media tweet" do
+      strategy_should_work(
+        "https://twitter.com/twotenky/status/1577831592227000320",
+        image_urls: %w[
+          https://pbs.twimg.com/media/FeWVcf2VUAATTey.jpg:orig
+          https://video.twimg.com/tweet_video/FeWVcf4VQAAIPTe.mp4
+        ],
+        page_url: "https://twitter.com/twotenky/status/1577831592227000320",
+        tag_name: "twotenky",
+        artist_name: "通天機",
+        profile_url: "https://twitter.com/twotenky",
+        artist_commentary_desc: "動画と静止画がセットでお得と聞いて https://t.co/hWvKoHLN7y",
+        dtext_artist_commentary_desc: "動画と静止画がセットでお得と聞いて",
+      )
+    end
+
+    context "A restricted tweet" do
+      strategy_should_work(
+        "https://mobile.twitter.com/Strangestone/status/556440271961858051",
+        image_urls: ["https://pbs.twimg.com/media/B7jfc1JCcAEyeJh.png:orig"],
+        page_url: "https://twitter.com/Strangestone/status/556440271961858051",
+        profile_url: "https://twitter.com/Strangestone",
+        profile_urls: ["https://twitter.com/Strangestone", "https://twitter.com/intent/user?user_id=93332575"],
+        tag_name: "Strangestone",
+        artist_name: "比村奇石",
+        dtext_artist_commentary_desc: "ブレザーが描きたかったのでJK鈴谷"
+      )
+    end
+
+    context "A tweet without any images" do
+      strategy_should_work(
+        "https://twitter.com/teruyo/status/1058452066060853248",
+        profile_url: "https://twitter.com/teruyo",
+        image_urls: [],
+        dtext_artist_commentary_desc: "all the women washizutan2 draws look like roast chicken",
+      )
+    end
+
+    context "A direct image url" do
+      strategy_should_work(
+        "https://pbs.twimg.com/media/EBGp2YdUYAA19Uj?format=jpg&name=small",
+        image_urls: ["https://pbs.twimg.com/media/EBGp2YdUYAA19Uj.jpg:orig"],
+        download_size: 229_661,
+        profile_url: nil
+      )
+    end
+
+    context "A direct image url with dashes" do
+      strategy_should_work(
+        "https://pbs.twimg.com/media/EAjc-OWVAAAxAgQ.jpg",
+        image_urls: ["https://pbs.twimg.com/media/EAjc-OWVAAAxAgQ.jpg:orig"],
+        download_size: 842_373,
+        profile_url: nil
+      )
+    end
+
+    context "A deleted tweet" do
+      strategy_should_work(
+        "https://twitter.com/masayasuf/status/870734961778630656",
+        deleted: true,
+        tag_name: "masayasuf",
+        profile_url: "https://twitter.com/masayasuf",
+        dtext_artist_commentary_desc: nil,
+      )
+    end
+
+    context "A tweet from a suspended user" do
+      strategy_should_work(
+        "https://twitter.com/tanso_panz/status/1192429800717029377",
+        tag_name: "tanso_panz",
+        profile_url: "https://twitter.com/tanso_panz",
+        image_urls: [],
+        dtext_artist_commentary_desc: nil,
+      )
+    end
+
+    context "A profile banner image" do
+      strategy_should_work(
+        "https://pbs.twimg.com/profile_banners/780804311529906176/1475001696",
+        image_urls: ["https://pbs.twimg.com/profile_banners/780804311529906176/1475001696/1500x500"],
+        download_size: 128_141,
+        profile_url: nil
+        # profile_url: "https://twitter.com/intent/user?user_id=780804311529906176"
+        # XXX we COULD fully support these by setting the page_url to https://twitter.com/Kekeflipnote/header_photo, but it's a lot of work for a niche case
+      )
+    end
+
+    context "A profile banner image sample" do
+      strategy_should_work(
+        "https://pbs.twimg.com/profile_banners/780804311529906176/1475001696/600x200",
+        image_urls: ["https://pbs.twimg.com/profile_banners/780804311529906176/1475001696/1500x500"],
+        download_size: 128_141,
+        profile_url: nil
+      )
+    end
+
+    context "A tweet with hashtags with normalizable prefixes" do
+      strategy_should_work(
+        "https://twitter.com/kasaishin100/status/1186658635226607616",
+        tags: ["西住みほ生誕祭2019"],
+        normalized_tags: ["西住みほ"],
+        dtext_artist_commentary_desc: <<~EOS.chomp
+          みぽりん誕生日おめでとうございます！！🎂
+          ボコボコ探検隊🙌✨
+          "#西住みほ生誕祭2019":[https://twitter.com/hashtag/西住みほ生誕祭2019]
+        EOS
+      )
+    end
+
+    context "A tweet with mentions that can be converted to dtext" do
+      strategy_should_work(
+        "https://twitter.com/noizave/status/875768175136317440",
+        dtext_artist_commentary_desc: 'test "#foo":[https://twitter.com/hashtag/foo] "#ホワイトデー":[https://twitter.com/hashtag/ホワイトデー] "@noizave":[https://twitter.com/noizave]\'s blah <http://www.example.com> <>& 😀'
+      )
+    end
+
+    context "A tweet with unicode text" do
+      strategy_should_work(
+        "https://twitter.com/aprilarcus/status/367557195186970624",
+        artist_commentary_desc: "𝖸𝗈 𝐔𝐧𝐢𝐜𝐨𝐝𝐞 𝗅 𝗁𝖾𝗋𝖽 𝕌 𝗅𝗂𝗄𝖾 𝑡𝑦𝑝𝑒𝑓𝑎𝑐𝑒𝑠 𝗌𝗈 𝗐𝖾 𝗉𝗎𝗍 𝗌𝗈𝗆𝖾 𝚌𝚘𝚍𝚎𝚙𝚘𝚒𝚗𝚝𝚜 𝗂𝗇 𝗒𝗈𝗎𝗋 𝔖𝔲𝔭𝔭𝔩𝔢𝔪𝔢𝔫𝔱𝔞𝔯𝔶 𝔚𝔲𝔩𝔱𝔦𝔩𝔦𝔫𝔤𝔳𝔞𝔩 𝔓𝔩𝔞𝔫𝔢 𝗌𝗈 𝗒𝗈𝗎 𝖼𝖺𝗇 𝓮𝓷𝓬𝓸𝓭𝓮 𝕗𝕠𝕟𝕥𝕤 𝗂𝗇 𝗒𝗈𝗎𝗋 𝒇𝒐𝒏𝒕𝒔.",
+        dtext_artist_commentary_desc: "𝖸𝗈 𝐔𝐧𝐢𝐜𝐨𝐝𝐞 𝗅 𝗁𝖾𝗋𝖽 𝕌 𝗅𝗂𝗄𝖾 𝑡𝑦𝑝𝑒𝑓𝑎𝑐𝑒𝑠 𝗌𝗈 𝗐𝖾 𝗉𝗎𝗍 𝗌𝗈𝗆𝖾 𝚌𝚘𝚍𝚎𝚙𝚘𝚒𝚗𝚝𝚜 𝗂𝗇 𝗒𝗈𝗎𝗋 𝔖𝔲𝔭𝔭𝔩𝔢𝔪𝔢𝔫𝔱𝔞𝔯𝔶 𝔚𝔲𝔩𝔱𝔦𝔩𝔦𝔫𝔤𝔳𝔞𝔩 𝔓𝔩𝔞𝔫𝔢 𝗌𝗈 𝗒𝗈𝗎 𝖼𝖺𝗇 𝓮𝓷𝓬𝓸𝓭𝓮 𝕗𝕠𝕟𝕥𝕤 𝗂𝗇 𝗒𝗈𝗎𝗋 𝒇𝒐𝒏𝒕𝒔.",
+      )
+    end
+
+    context "A tweet with normalizable full-width hashtags" do
+      strategy_should_work(
+        "https://twitter.com/corpsmanWelt/status/1037724260075069441",
+        artist_commentary_desc: %{新しいおともだち\n＃けものフレンズ https://t.co/sEAuu16yAQ},
+        dtext_artist_commentary_desc: %{新しいおともだち\n"#けものフレンズ":[https://twitter.com/hashtag/けものフレンズ]}
+      )
+    end
+
+    context "A tweet with mega.nz links" do
+      strategy_should_work(
+        "https://twitter.com/VG_Worklog/status/1587457941418160128",
+        dtext_artist_commentary_desc: <<~EOS.chomp
+          Sound by: "@RealAudiodude":[https://twitter.com/RealAudiodude] 
+          Download: <https://mega.nz/folder/i80gVL7L#111g2XX7bIJ-2KnAHxMt0w>
+          Support: <https://www.patreon.com/vgerotica>
+        EOS
+      )
+    end
+
+    context "A tweet with fullwidth parentheses" do
+      strategy_should_work(
+        "https://twitter.com/Chanta_in_inari/status/1031042032934871041",
+        dtext_artist_commentary_desc: <<~EOS.chomp
+          政長さん（<https://twitter.com/naga_masanaga>）の藍様線画を塗ってましたあ。
+          うーん、かわいい。
+        EOS
+      )
+    end
+
+    context "A tweet with cashtags" do
+      strategy_should_work(
+        "https://twitter.com/CFRJacobsson/status/1608788299665276931",
+        dtext_artist_commentary_desc: <<~EOS.chomp
+          "$GOOG":[https://twitter.com/search?q=$GOOG] is the next "$IBM":[https://twitter.com/search?q=$IBM] 🧵
+
+          1/7
+        EOS
+      )
+    end
+
+    should "Parse Twitter URLs correctly" do
+      assert(Source::URL.image_url?("https://pbs.twimg.com/media/EBGbJe_U8AA4Ekb.jpg"))
+      assert(Source::URL.image_url?("https://pbs.twimg.com/media/EBGbJe_U8AA4Ekb.jpg:small"))
+      assert(Source::URL.image_url?("https://pbs.twimg.com/media/EBGbJe_U8AA4Ekb?format=jpg&name=900x900"))
+      assert(Source::URL.image_url?("https://pbs.twimg.com/tweet_video_thumb/ETkN_L3X0AMy1aT.jpg"))
+      assert(Source::URL.image_url?("https://pbs.twimg.com/ext_tw_video_thumb/1243725361986375680/pu/img/JDA7g7lcw7wK-PIv.jpg"))
+      assert(Source::URL.image_url?("https://pbs.twimg.com/amplify_video_thumb/1215590775364259840/img/lolCkEEioFZTb5dl.jpg"))
+
+      assert(Source::URL.page_url?("https://twitter.com/i/status/1261877313349640194"))
+      assert(Source::URL.page_url?("https://twitter.com/i/web/status/1261877313349640194"))
+      assert(Source::URL.page_url?("https://twitter.com/BOW999/status/1261877313349640194"))
+      assert(Source::URL.page_url?("https://twitter.com/BOW999/status/1261877313349640194/photo/1"))
+      assert(Source::URL.page_url?("https://twitter.com/BOW999/status/1261877313349640194?s=19"))
+
+      assert(Source::URL.profile_url?("https://www.twitter.com/irt_5433"))
+      assert(Source::URL.profile_url?("https://www.twitter.com/irt_5433/likes"))
+      assert(Source::URL.profile_url?("https://twitter.com/intent/user?user_id=1485229827984531457"))
+      assert(Source::URL.profile_url?("https://twitter.com/intent/user?screen_name=ryuudog_NFT"))
+      assert(Source::URL.profile_url?("https://twitter.com/i/user/889592953"))
+
+      assert_not(Source::URL.profile_url?("https://twitter.com/home"))
+
+      assert_nil(Source::URL.parse("https://twitter.com/i/status/1261877313349640194").username)
+      assert_nil(Source::URL.parse("https://twitter.com/i/web/status/1261877313349640194").username)
+      assert_equal("BOW999", Source::URL.parse("https://twitter.com/BOW999/status/1261877313349640194").username)
+    end
+  end
+end

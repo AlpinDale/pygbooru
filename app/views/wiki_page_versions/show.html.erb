@@ -1,0 +1,16 @@
+<%= render "wiki_pages/sidebar" %>
+
+<% content_for(:content) do %>
+  <h1 id="wiki-page-title"><%= @wiki_page_version.pretty_title %></h1>
+  <p class="fineprint"><%= time_ago_in_words_tagged(@wiki_page_version.updated_at) %></p>
+
+  <div id="wiki-page-body" class="dtext prose">
+    <% if @wiki_page_version.other_names.present? %>
+      <%= wiki_page_other_names_list(@wiki_page_version) %>
+    <% end %>
+
+    <%= format_text(@wiki_page_version.body) %>
+  </div>
+<% end %>
+
+<%= render "wiki_pages/secondary_links" %>

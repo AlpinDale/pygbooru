@@ -1,0 +1,102 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  hello: "Hello world"
+  activerecord:
+    attributes:
+      artist_url:
+        url: ""
+      favorite:
+        user: "You"
+        user_id: "You"
+      forum_post_vote:
+        creator_id: "Your vote"
+      media_asset:
+        file_ext: ""
+      moderation_report:
+        creator: "You"
+      post:
+        approver: "You"
+        approver_id: "You"
+        updater_id: "You"
+        uploader: "You"
+        uploader_id: "You"
+        md5: ""
+      post_flag:
+        creator: "You"
+        creator_id: "You"
+      post_vote:
+        user: "You"
+        user_id: "You"
+      post_appeal:
+        creator: "You"
+        creator_id: "You"
+      post_disapproval:
+        user: "You"
+        user_id: "You"
+      comment_vote:
+        user_id: "You"
+      reaction:
+        creator: "You"
+      upload:
+        uploader: "You"
+        uploader_id: "You"
+      user/email_address:
+        address: "Email address"
+        normalized_address: "Email address"
+      user_feedback:
+        creator: "You"
+        creator_id: "You"
+      saved_search:
+        user: "You"
+        user_id: "You"
+    errors:
+      messages:
+        record_invalid: "%{errors}"
+      models:
+        tag:
+          attributes:
+            name:
+              format: "%{message}"
+        tag_alias:
+          attributes:
+            antecedent_name:
+              format: "%{message}"
+            consequent_name:
+              format: "%{message}"
+        tag_implication:
+          attributes:
+            antecedent_name:
+              taken: "Implication already exists"
+              format: "%{message}"
+            consequent_name:
+              format: "%{message}"

@@ -1,0 +1,18 @@
+<h2>Hi <%= link_to_user @user %>,</h2>
+
+<p>
+  Welcome to <%= link_to Danbooru.config.canonical_app_name, root_url %>! Click the link below to verify your email address:
+</p>
+
+<p style="margin-left: 2em">
+  <%= link_to "Verify email address", email_verification_url(@user) %>
+</p>
+
+<p class="fineprint">
+  You received this email because someone signed up for <%= link_to Danbooru.config.canonical_app_name, root_url %> with your address.
+  <%= link_to "Click here", disable_email_notifications_url(@user) %> to disable email notifications.
+</p>
+
+<% content_for(:footer_links) do %>
+  / <%= link_to "Unsubscribe", disable_email_notifications_url(@user) %>
+<% end %>

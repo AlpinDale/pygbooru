@@ -1,0 +1,8 @@
+FactoryBot.define do
+  factory :tag_implication do
+    creator
+    antecedent_name {"#{FFaker::Name.first_name.downcase}#{rand(1000)}"}
+    consequent_name {"#{FFaker::Name.first_name.downcase}#{rand(1000)}"}
+    status {"active"}
+  end
+end

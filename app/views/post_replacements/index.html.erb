@@ -1,0 +1,68 @@
+<div id="c-post-replacements">
+  <div id="a-index">
+    <h1>Post Replacements</h1>
+
+    <%= render "posts/partials/common/inline_blacklist" %>
+
+    <%= search_form_for(post_replacements_path) do |f| %>
+      <%= f.input :creator_name, label: "Replacer", input_html: { value: params[:search][:creator_name], data: { autocomplete: "user" } } %>
+      <%= f.input :post_tags_match, label: "Tags", input_html: { value: params[:search][:post_tags_match], data: { autocomplete: "tag-query" } } %>
+      <%= f.submit "Search" %>
+    <% end %>
+
+    <%= table_for @post_replacements, class: "striped autofit", width: "100%" do |t| %>
+      <% t.column "Post", width: "1%" do |post_replacement| %>
+        <%= post_preview(post_replacement.post, show_deleted: true) %>
+      <% end %>
+      <% t.column "Source" do |post_replacement| %>
+        <dl>
+          <dt>Original Source</dt>
+          <dd><%= external_link_to post_replacement.original_url, truncate: 64 %></dd>
+          <dt>Replacement Source</dt>
+          <dd>
+            <% if post_replacement.replacement_url.present? %>
+              <%= external_link_to post_replacement.replacement_url, truncate: 64 %>
+            <% else %>
+              <em>file</em>
+            <% end %>
+          </dd>
+        </dl>
+      <% end %>
+      <% t.column "MD5" do |post_replacement| %>
+        <% if post_replacement.old_md5.present? && post_replacement.md5.present? %>
+          <dl>
+            <dt>Original MD5</dt>
+            <dd><%= link_to_if post_replacement.old_media_asset.present?, post_replacement.old_md5, post_replacement.old_media_asset %></dd>
+
+            <dt>Replacement MD5</dt>
+            <dd><%= link_to_if post_replacement.media_asset.present?, post_replacement.md5, post_replacement.media_asset %></dd>
+          </dl>
+        <% end %>
+      <% end %>
+      <% t.column "Size" do |post_replacement| %>
+        <% if %i[old_image_width old_image_height old_file_size old_file_ext image_width image_height file_size file_ext].all? { |k| post_replacement[k].present? } %>
+          <dl>
+            <dt>Original Size</dt>
+            <dd>
+              <%= link_to_if post_replacement.old_media_asset.present?, "#{post_replacement.old_image_width}x#{post_replacement.old_image_height} (#{post_replacement.old_file_size.to_fs(:human_size, precision: 4)}, #{post_replacement.old_file_ext})", post_replacement.old_media_asset %>
+            </dd>
+
+            <dt>Replacement Size</dt>
+            <dd>
+              <%= link_to_if post_replacement.media_asset.present?, "#{post_replacement.image_width}x#{post_replacement.image_height} (#{post_replacement.file_size.to_fs(:human_size, precision: 4)}, #{post_replacement.file_ext})", post_replacement.media_asset %>
+            </dd>
+          </dl>
+        <% end %>
+      <% end %>
+      <% t.column "Replacer" do |post_replacement| %>
+        <%= link_to_user post_replacement.creator %>
+        <%= link_to "»", post_replacements_path(search: params[:search].merge(creator_name: post_replacement.creator.name)) %>
+        <div><%= compact_time post_replacement.created_at %></div>
+      <% end %>
+    <% end %>
+
+    <%= numbered_paginator(@post_replacements) %>
+  </div>
+</div>
+
+<%= render "post_events/secondary_links" %>
